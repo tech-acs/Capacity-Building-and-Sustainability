@@ -1,0 +1,355 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "properties": {
+    "province": "Kigali City",
+    "district": "Gasabo",
+    "pcode_sim": "SIM-GAS"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       30.05,
+       -1.95
+      ],
+      [
+       30.2,
+       -1.95
+      ],
+      [
+       30.2,
+       -1.8
+      ],
+      [
+       30.05,
+       -1.8
+      ],
+      [
+       30.05,
+       -1.95
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "province": "Kigali City",
+    "district": "Kicukiro",
+    "pcode_sim": "SIM-KIC"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       30.05,
+       -2.05
+      ],
+      [
+       30.15,
+       -2.05
+      ],
+      [
+       30.15,
+       -1.95
+      ],
+      [
+       30.05,
+       -1.95
+      ],
+      [
+       30.05,
+       -2.05
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "province": "Kigali City",
+    "district": "Nyarugenge",
+    "pcode_sim": "SIM-NYA"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       29.95,
+       -2.02
+      ],
+      [
+       30.05,
+       -2.02
+      ],
+      [
+       30.05,
+       -1.92
+      ],
+      [
+       29.95,
+       -1.92
+      ],
+      [
+       29.95,
+       -2.02
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "province": "Northern",
+    "district": "Musanze",
+    "pcode_sim": "SIM-MUS"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       29.55,
+       -1.55
+      ],
+      [
+       29.7,
+       -1.55
+      ],
+      [
+       29.7,
+       -1.4
+      ],
+      [
+       29.55,
+       -1.4
+      ],
+      [
+       29.55,
+       -1.55
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "province": "Northern",
+    "district": "Gicumbi",
+    "pcode_sim": "SIM-GIC"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       29.85,
+       -1.55
+      ],
+      [
+       30.05,
+       -1.55
+      ],
+      [
+       30.05,
+       -1.35
+      ],
+      [
+       29.85,
+       -1.35
+      ],
+      [
+       29.85,
+       -1.55
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "province": "Southern",
+    "district": "Huye",
+    "pcode_sim": "SIM-HUY"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       29.68,
+       -2.65
+      ],
+      [
+       29.8,
+       -2.65
+      ],
+      [
+       29.8,
+       -2.55
+      ],
+      [
+       29.68,
+       -2.55
+      ],
+      [
+       29.68,
+       -2.65
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "province": "Southern",
+    "district": "Nyanza",
+    "pcode_sim": "SIM-NYZ"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       29.65,
+       -2.4
+      ],
+      [
+       29.78,
+       -2.4
+      ],
+      [
+       29.78,
+       -2.3
+      ],
+      [
+       29.65,
+       -2.3
+      ],
+      [
+       29.65,
+       -2.4
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "province": "Eastern",
+    "district": "Rwamagana",
+    "pcode_sim": "SIM-RWA"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       30.35,
+       -1.98
+      ],
+      [
+       30.5,
+       -1.98
+      ],
+      [
+       30.5,
+       -1.88
+      ],
+      [
+       30.35,
+       -1.88
+      ],
+      [
+       30.35,
+       -1.98
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "province": "Eastern",
+    "district": "Nyagatare",
+    "pcode_sim": "SIM-NYG"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       30.2,
+       -1.35
+      ],
+      [
+       30.45,
+       -1.35
+      ],
+      [
+       30.45,
+       -1.15
+      ],
+      [
+       30.2,
+       -1.15
+      ],
+      [
+       30.2,
+       -1.35
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "province": "Western",
+    "district": "Rubavu",
+    "pcode_sim": "SIM-RUB"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       29.28,
+       -1.75
+      ],
+      [
+       29.4,
+       -1.75
+      ],
+      [
+       29.4,
+       -1.62
+      ],
+      [
+       29.28,
+       -1.62
+      ],
+      [
+       29.28,
+       -1.75
+      ]
+     ]
+    ]
+   }
+  }
+ ]
+}

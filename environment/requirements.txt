@@ -1,0 +1,42 @@
+# Track 1 & Track 2 — Python environment (one venv, both tracks)
+# python -m venv track2-env && source track2-env/bin/activate
+# pip install -r environment/requirements.txt
+
+# core
+pandas
+numpy
+jupyterlab
+ipykernel
+
+# connectivity & standards (Track 1, Modules 2, 4)
+requests
+
+# data validation (Track 1, Modules 8-9)
+pandera
+
+# serving data as an API — optional extension (Track 1, Module 2 Extension)
+fastapi
+uvicorn
+
+# visualization (Modules 1-3)
+matplotlib
+seaborn
+plotly
+kaleido           # static image export for plotly figures
+
+# geospatial (Module 4)
+geopandas
+folium
+
+# dashboards (Modules 5-6)
+streamlit
+dash
+
+# forecasting & modeling (Modules 7-8)
+statsmodels
+scikit-learn
+prophet           # optional — heavier install (needs a C++ toolchain); Module 7 falls
+                   # back to statsmodels automatically if this isn't installed
+
+# responsible AI (Module 10)
+fairlearn

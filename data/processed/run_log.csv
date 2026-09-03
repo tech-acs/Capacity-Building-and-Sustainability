@@ -1,0 +1,6 @@
+step,status
+ingest,OK
+standardize,OK
+validate,OK
+document,OK
+publish,OK

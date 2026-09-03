@@ -1,0 +1,10 @@
+column,dtype,pct_missing
+date,str,0.0
+province,str,0.0
+district,str,0.0
+district_pcode,str,0.0
+indicator,str,0.0
+value,float64,0.0
+feature_1,float64,0.0
+feature_2,float64,0.0
+outcome,int64,0.0

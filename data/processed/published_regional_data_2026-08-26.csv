@@ -1,0 +1,241 @@
+date,province,district,district_pcode,indicator,value,feature_1,feature_2,outcome
+2023-01-01,Kigali City,Gasabo,SIM-GAS,sample_wellbeing_index,39.37,82.01,19.22,1
+2023-02-01,Kigali City,Gasabo,SIM-GAS,sample_wellbeing_index,45.24,49.99,17.62,1
+2023-03-01,Kigali City,Gasabo,SIM-GAS,sample_wellbeing_index,41.16,46.66,19.93,0
+2023-04-01,Kigali City,Gasabo,SIM-GAS,sample_wellbeing_index,42.91,49.17,20.35,0
+2023-05-01,Kigali City,Gasabo,SIM-GAS,sample_wellbeing_index,42.05,51.04,20.35,0
+2023-06-01,Kigali City,Gasabo,SIM-GAS,sample_wellbeing_index,40.24,61.77,12.82,1
+2023-07-01,Kigali City,Gasabo,SIM-GAS,sample_wellbeing_index,31.73,48.31,8.75,1
+2023-08-01,Kigali City,Gasabo,SIM-GAS,sample_wellbeing_index,36.77,56.0,23.48,0
+2023-09-01,Kigali City,Gasabo,SIM-GAS,sample_wellbeing_index,34.65,32.7,26.71,0
+2023-10-01,Kigali City,Gasabo,SIM-GAS,sample_wellbeing_index,34.69,28.23,16.8,0
+2023-11-01,Kigali City,Gasabo,SIM-GAS,sample_wellbeing_index,36.7,65.7,29.54,0
+2023-12-01,Kigali City,Gasabo,SIM-GAS,sample_wellbeing_index,34.33,56.85,21.07,1
+2024-01-01,Kigali City,Gasabo,SIM-GAS,sample_wellbeing_index,42.41,50.72,18.27,1
+2024-02-01,Kigali City,Gasabo,SIM-GAS,sample_wellbeing_index,45.43,33.35,26.13,0
+2024-03-01,Kigali City,Gasabo,SIM-GAS,sample_wellbeing_index,43.53,42.36,28.36,0
+2024-04-01,Kigali City,Gasabo,SIM-GAS,sample_wellbeing_index,41.66,49.56,13.52,0
+2024-05-01,Kigali City,Gasabo,SIM-GAS,sample_wellbeing_index,41.12,44.88,13.39,0
+2024-06-01,Kigali City,Gasabo,SIM-GAS,sample_wellbeing_index,42.86,56.27,6.53,1
+2024-07-01,Kigali City,Gasabo,SIM-GAS,sample_wellbeing_index,40.51,52.54,25.21,1
+2024-08-01,Kigali City,Gasabo,SIM-GAS,sample_wellbeing_index,37.77,56.3,27.18,0
+2024-09-01,Kigali City,Gasabo,SIM-GAS,sample_wellbeing_index,36.71,54.54,17.26,1
+2024-10-01,Kigali City,Gasabo,SIM-GAS,sample_wellbeing_index,41.53,44.92,29.58,0
+2024-11-01,Kigali City,Gasabo,SIM-GAS,sample_wellbeing_index,42.44,55.65,14.47,0
+2024-12-01,Kigali City,Gasabo,SIM-GAS,sample_wellbeing_index,42.95,43.3,25.77,0
+2023-01-01,Northern,Gicumbi,SIM-GIC,sample_wellbeing_index,65.32,40.79,31.28,0
+2023-02-01,Northern,Gicumbi,SIM-GIC,sample_wellbeing_index,67.52,52.16,32.23,0
+2023-03-01,Northern,Gicumbi,SIM-GIC,sample_wellbeing_index,65.45,42.22,12.22,1
+2023-04-01,Northern,Gicumbi,SIM-GIC,sample_wellbeing_index,66.69,46.98,15.79,1
+2023-05-01,Northern,Gicumbi,SIM-GIC,sample_wellbeing_index,66.8,57.52,23.85,1
+2023-06-01,Northern,Gicumbi,SIM-GIC,sample_wellbeing_index,63.68,43.75,23.87,0
+2023-07-01,Northern,Gicumbi,SIM-GIC,sample_wellbeing_index,60.68,48.27,19.69,0
+2023-08-01,Northern,Gicumbi,SIM-GIC,sample_wellbeing_index,58.29,50.81,15.85,1
+2023-09-01,Northern,Gicumbi,SIM-GIC,sample_wellbeing_index,59.34,66.22,19.95,1
+2023-10-01,Northern,Gicumbi,SIM-GIC,sample_wellbeing_index,61.03,40.59,21.51,0
+2023-11-01,Northern,Gicumbi,SIM-GIC,sample_wellbeing_index,61.61,46.94,25.18,0
+2023-12-01,Northern,Gicumbi,SIM-GIC,sample_wellbeing_index,67.06,53.53,17.83,0
+2024-01-01,Northern,Gicumbi,SIM-GIC,sample_wellbeing_index,65.11,56.46,21.95,1
+2024-02-01,Northern,Gicumbi,SIM-GIC,sample_wellbeing_index,69.35,61.34,13.01,1
+2024-03-01,Northern,Gicumbi,SIM-GIC,sample_wellbeing_index,72.93,40.87,26.99,0
+2024-04-01,Northern,Gicumbi,SIM-GIC,sample_wellbeing_index,69.98,34.64,26.25,0
+2024-05-01,Northern,Gicumbi,SIM-GIC,sample_wellbeing_index,64.37,51.02,24.89,0
+2024-06-01,Northern,Gicumbi,SIM-GIC,sample_wellbeing_index,66.55,52.49,27.02,0
+2024-07-01,Northern,Gicumbi,SIM-GIC,sample_wellbeing_index,68.28,66.55,20.69,1
+2024-08-01,Northern,Gicumbi,SIM-GIC,sample_wellbeing_index,65.77,44.81,23.53,0
+2024-09-01,Northern,Gicumbi,SIM-GIC,sample_wellbeing_index,63.15,54.62,26.77,1
+2024-10-01,Northern,Gicumbi,SIM-GIC,sample_wellbeing_index,67.2,53.71,14.62,1
+2024-11-01,Northern,Gicumbi,SIM-GIC,sample_wellbeing_index,65.98,35.47,20.54,0
+2024-12-01,Northern,Gicumbi,SIM-GIC,sample_wellbeing_index,67.74,37.69,22.08,0
+2023-01-01,Southern,Huye,SIM-HUY,sample_wellbeing_index,42.83,52.67,27.62,0
+2023-02-01,Southern,Huye,SIM-HUY,sample_wellbeing_index,48.77,46.86,15.72,1
+2023-03-01,Southern,Huye,SIM-HUY,sample_wellbeing_index,45.66,52.97,26.57,0
+2023-04-01,Southern,Huye,SIM-HUY,sample_wellbeing_index,45.94,32.21,13.59,0
+2023-05-01,Southern,Huye,SIM-HUY,sample_wellbeing_index,49.48,47.51,14.77,0
+2023-06-01,Southern,Huye,SIM-HUY,sample_wellbeing_index,40.97,46.64,13.59,1
+2023-07-01,Southern,Huye,SIM-HUY,sample_wellbeing_index,39.04,42.17,21.54,1
+2023-08-01,Southern,Huye,SIM-HUY,sample_wellbeing_index,41.69,45.12,21.28,0
+2023-09-01,Southern,Huye,SIM-HUY,sample_wellbeing_index,39.29,52.56,15.28,0
+2023-10-01,Southern,Huye,SIM-HUY,sample_wellbeing_index,39.31,38.16,26.82,0
+2023-11-01,Southern,Huye,SIM-HUY,sample_wellbeing_index,38.72,46.78,17.46,0
+2023-12-01,Southern,Huye,SIM-HUY,sample_wellbeing_index,45.85,35.56,10.66,1
+2024-01-01,Southern,Huye,SIM-HUY,sample_wellbeing_index,46.16,51.63,22.22,0
+2024-02-01,Southern,Huye,SIM-HUY,sample_wellbeing_index,50.37,41.07,20.32,0
+2024-03-01,Southern,Huye,SIM-HUY,sample_wellbeing_index,46.93,56.15,22.85,0
+2024-04-01,Southern,Huye,SIM-HUY,sample_wellbeing_index,46.29,52.92,25.35,0
+2024-05-01,Southern,Huye,SIM-HUY,sample_wellbeing_index,46.45,35.87,32.55,0
+2024-06-01,Southern,Huye,SIM-HUY,sample_wellbeing_index,46.18,56.58,24.67,1
+2024-07-01,Southern,Huye,SIM-HUY,sample_wellbeing_index,40.84,57.44,20.4,1
+2024-08-01,Southern,Huye,SIM-HUY,sample_wellbeing_index,38.05,44.59,23.31,1
+2024-09-01,Southern,Huye,SIM-HUY,sample_wellbeing_index,39.33,42.87,19.41,0
+2024-10-01,Southern,Huye,SIM-HUY,sample_wellbeing_index,43.99,58.99,26.32,1
+2024-11-01,Southern,Huye,SIM-HUY,sample_wellbeing_index,40.65,61.73,28.27,1
+2024-12-01,Southern,Huye,SIM-HUY,sample_wellbeing_index,44.61,60.81,18.14,1
+2023-01-01,Kigali City,Kicukiro,SIM-KIC,sample_wellbeing_index,62.81,53.74,21.96,0
+2023-02-01,Kigali City,Kicukiro,SIM-KIC,sample_wellbeing_index,66.77,44.31,27.13,0
+2023-03-01,Kigali City,Kicukiro,SIM-KIC,sample_wellbeing_index,69.78,45.42,18.56,1
+2023-04-01,Kigali City,Kicukiro,SIM-KIC,sample_wellbeing_index,67.85,55.66,13.83,1
+2023-05-01,Kigali City,Kicukiro,SIM-KIC,sample_wellbeing_index,64.42,45.71,16.76,1
+2023-06-01,Kigali City,Kicukiro,SIM-KIC,sample_wellbeing_index,61.97,41.54,23.19,0
+2023-07-01,Kigali City,Kicukiro,SIM-KIC,sample_wellbeing_index,61.11,57.81,22.44,1
+2023-08-01,Kigali City,Kicukiro,SIM-KIC,sample_wellbeing_index,62.24,52.84,16.92,1
+2023-09-01,Kigali City,Kicukiro,SIM-KIC,sample_wellbeing_index,58.5,52.1,14.61,0
+2023-10-01,Kigali City,Kicukiro,SIM-KIC,sample_wellbeing_index,60.14,36.63,10.24,1
+2023-11-01,Kigali City,Kicukiro,SIM-KIC,sample_wellbeing_index,59.37,54.96,17.35,0
+2023-12-01,Kigali City,Kicukiro,SIM-KIC,sample_wellbeing_index,59.57,44.85,18.63,0
+2024-01-01,Kigali City,Kicukiro,SIM-KIC,sample_wellbeing_index,63.07,34.64,20.07,0
+2024-02-01,Kigali City,Kicukiro,SIM-KIC,sample_wellbeing_index,64.24,56.97,25.46,1
+2024-03-01,Kigali City,Kicukiro,SIM-KIC,sample_wellbeing_index,61.55,57.59,26.03,1
+2024-04-01,Kigali City,Kicukiro,SIM-KIC,sample_wellbeing_index,62.45,54.12,29.3,0
+2024-05-01,Kigali City,Kicukiro,SIM-KIC,sample_wellbeing_index,64.39,61.12,16.52,1
+2024-06-01,Kigali City,Kicukiro,SIM-KIC,sample_wellbeing_index,59.44,41.88,15.91,0
+2024-07-01,Kigali City,Kicukiro,SIM-KIC,sample_wellbeing_index,60.05,59.54,15.3,1
+2024-08-01,Kigali City,Kicukiro,SIM-KIC,sample_wellbeing_index,61.21,55.61,13.38,1
+2024-09-01,Kigali City,Kicukiro,SIM-KIC,sample_wellbeing_index,57.56,53.85,21.5,1
+2024-10-01,Kigali City,Kicukiro,SIM-KIC,sample_wellbeing_index,59.18,31.46,13.15,0
+2024-11-01,Kigali City,Kicukiro,SIM-KIC,sample_wellbeing_index,59.33,61.38,21.37,1
+2024-12-01,Kigali City,Kicukiro,SIM-KIC,sample_wellbeing_index,63.66,41.93,9.74,1
+2023-01-01,Northern,Musanze,SIM-MUS,sample_wellbeing_index,62.13,50.08,28.4,0
+2023-02-01,Northern,Musanze,SIM-MUS,sample_wellbeing_index,60.35,48.26,12.06,1
+2023-03-01,Northern,Musanze,SIM-MUS,sample_wellbeing_index,62.41,48.52,19.65,1
+2023-04-01,Northern,Musanze,SIM-MUS,sample_wellbeing_index,57.41,35.02,16.73,0
+2023-05-01,Northern,Musanze,SIM-MUS,sample_wellbeing_index,62.13,53.1,15.68,1
+2023-06-01,Northern,Musanze,SIM-MUS,sample_wellbeing_index,64.02,43.9,16.19,1
+2023-07-01,Northern,Musanze,SIM-MUS,sample_wellbeing_index,57.67,52.22,15.46,0
+2023-08-01,Northern,Musanze,SIM-MUS,sample_wellbeing_index,56.59,49.46,11.79,1
+2023-09-01,Northern,Musanze,SIM-MUS,sample_wellbeing_index,56.79,47.59,18.7,1
+2023-10-01,Northern,Musanze,SIM-MUS,sample_wellbeing_index,54.31,36.52,21.61,0
+2023-11-01,Northern,Musanze,SIM-MUS,sample_wellbeing_index,58.21,35.59,19.5,0
+2023-12-01,Northern,Musanze,SIM-MUS,sample_wellbeing_index,63.26,39.36,12.93,0
+2024-01-01,Northern,Musanze,SIM-MUS,sample_wellbeing_index,58.86,44.1,22.1,0
+2024-02-01,Northern,Musanze,SIM-MUS,sample_wellbeing_index,66.51,42.63,33.19,0
+2024-03-01,Northern,Musanze,SIM-MUS,sample_wellbeing_index,63.15,27.09,19.58,0
+2024-04-01,Northern,Musanze,SIM-MUS,sample_wellbeing_index,58.35,50.74,19.0,0
+2024-05-01,Northern,Musanze,SIM-MUS,sample_wellbeing_index,63.79,60.05,17.57,1
+2024-06-01,Northern,Musanze,SIM-MUS,sample_wellbeing_index,59.52,42.13,20.4,0
+2024-07-01,Northern,Musanze,SIM-MUS,sample_wellbeing_index,58.27,27.86,22.93,0
+2024-08-01,Northern,Musanze,SIM-MUS,sample_wellbeing_index,58.79,67.79,19.92,1
+2024-09-01,Northern,Musanze,SIM-MUS,sample_wellbeing_index,55.12,61.7,19.92,1
+2024-10-01,Northern,Musanze,SIM-MUS,sample_wellbeing_index,61.1,49.51,18.46,0
+2024-11-01,Northern,Musanze,SIM-MUS,sample_wellbeing_index,53.81,34.82,19.65,0
+2024-12-01,Northern,Musanze,SIM-MUS,sample_wellbeing_index,63.47,48.73,20.8,1
+2023-01-01,Eastern,Nyagatare,SIM-NYG,sample_wellbeing_index,52.75,49.28,27.32,1
+2023-02-01,Eastern,Nyagatare,SIM-NYG,sample_wellbeing_index,56.74,35.8,24.31,0
+2023-03-01,Eastern,Nyagatare,SIM-NYG,sample_wellbeing_index,57.67,43.76,26.55,0
+2023-04-01,Eastern,Nyagatare,SIM-NYG,sample_wellbeing_index,55.25,65.42,9.79,1
+2023-05-01,Eastern,Nyagatare,SIM-NYG,sample_wellbeing_index,51.46,52.06,19.99,0
+2023-06-01,Eastern,Nyagatare,SIM-NYG,sample_wellbeing_index,51.53,55.17,24.73,0
+2023-07-01,Eastern,Nyagatare,SIM-NYG,sample_wellbeing_index,46.62,64.29,18.9,1
+2023-08-01,Eastern,Nyagatare,SIM-NYG,sample_wellbeing_index,50.34,57.88,12.37,1
+2023-09-01,Eastern,Nyagatare,SIM-NYG,sample_wellbeing_index,46.66,55.02,16.92,1
+2023-10-01,Eastern,Nyagatare,SIM-NYG,sample_wellbeing_index,42.4,50.54,29.29,0
+2023-11-01,Eastern,Nyagatare,SIM-NYG,sample_wellbeing_index,54.97,55.37,19.18,0
+2023-12-01,Eastern,Nyagatare,SIM-NYG,sample_wellbeing_index,53.19,65.67,20.17,1
+2024-01-01,Eastern,Nyagatare,SIM-NYG,sample_wellbeing_index,58.55,46.77,26.68,0
+2024-02-01,Eastern,Nyagatare,SIM-NYG,sample_wellbeing_index,61.5,53.81,21.84,0
+2024-03-01,Eastern,Nyagatare,SIM-NYG,sample_wellbeing_index,56.24,60.53,20.33,1
+2024-04-01,Eastern,Nyagatare,SIM-NYG,sample_wellbeing_index,60.29,49.63,33.03,0
+2024-05-01,Eastern,Nyagatare,SIM-NYG,sample_wellbeing_index,57.95,46.87,19.01,0
+2024-06-01,Eastern,Nyagatare,SIM-NYG,sample_wellbeing_index,55.26,40.69,21.69,0
+2024-07-01,Eastern,Nyagatare,SIM-NYG,sample_wellbeing_index,51.51,47.62,25.8,0
+2024-08-01,Eastern,Nyagatare,SIM-NYG,sample_wellbeing_index,54.66,57.39,21.66,1
+2024-09-01,Eastern,Nyagatare,SIM-NYG,sample_wellbeing_index,47.77,60.49,21.22,1
+2024-10-01,Eastern,Nyagatare,SIM-NYG,sample_wellbeing_index,51.09,46.21,24.92,0
+2024-11-01,Eastern,Nyagatare,SIM-NYG,sample_wellbeing_index,51.51,38.81,22.58,1
+2024-12-01,Eastern,Nyagatare,SIM-NYG,sample_wellbeing_index,58.88,49.75,17.56,0
+2023-01-01,Southern,Nyanza,SIM-NYZ,sample_wellbeing_index,43.87,60.13,16.11,1
+2023-02-01,Southern,Nyanza,SIM-NYZ,sample_wellbeing_index,39.6,53.23,13.46,1
+2023-03-01,Southern,Nyanza,SIM-NYZ,sample_wellbeing_index,49.81,60.78,26.67,1
+2023-04-01,Southern,Nyanza,SIM-NYZ,sample_wellbeing_index,48.39,48.62,24.94,0
+2023-05-01,Southern,Nyanza,SIM-NYZ,sample_wellbeing_index,47.67,42.57,19.07,0
+2023-06-01,Southern,Nyanza,SIM-NYZ,sample_wellbeing_index,41.84,45.14,12.25,1
+2023-07-01,Southern,Nyanza,SIM-NYZ,sample_wellbeing_index,38.82,47.59,23.65,0
+2023-08-01,Southern,Nyanza,SIM-NYZ,sample_wellbeing_index,38.98,60.6,23.96,1
+2023-09-01,Southern,Nyanza,SIM-NYZ,sample_wellbeing_index,33.43,37.73,19.14,1
+2023-10-01,Southern,Nyanza,SIM-NYZ,sample_wellbeing_index,36.44,54.44,14.3,1
+2023-11-01,Southern,Nyanza,SIM-NYZ,sample_wellbeing_index,41.23,47.19,24.62,0
+2023-12-01,Southern,Nyanza,SIM-NYZ,sample_wellbeing_index,38.04,57.68,25.93,1
+2024-01-01,Southern,Nyanza,SIM-NYZ,sample_wellbeing_index,43.75,34.63,19.8,0
+2024-02-01,Southern,Nyanza,SIM-NYZ,sample_wellbeing_index,50.82,49.09,20.14,0
+2024-03-01,Southern,Nyanza,SIM-NYZ,sample_wellbeing_index,44.75,57.46,17.61,1
+2024-04-01,Southern,Nyanza,SIM-NYZ,sample_wellbeing_index,45.39,63.79,10.34,1
+2024-05-01,Southern,Nyanza,SIM-NYZ,sample_wellbeing_index,45.05,31.91,16.32,0
+2024-06-01,Southern,Nyanza,SIM-NYZ,sample_wellbeing_index,45.83,41.14,26.35,0
+2024-07-01,Southern,Nyanza,SIM-NYZ,sample_wellbeing_index,39.77,39.76,14.84,0
+2024-08-01,Southern,Nyanza,SIM-NYZ,sample_wellbeing_index,38.32,50.18,12.69,1
+2024-09-01,Southern,Nyanza,SIM-NYZ,sample_wellbeing_index,38.77,35.25,19.26,0
+2024-10-01,Southern,Nyanza,SIM-NYZ,sample_wellbeing_index,40.3,49.56,9.89,1
+2024-11-01,Southern,Nyanza,SIM-NYZ,sample_wellbeing_index,37.46,58.26,17.78,1
+2024-12-01,Southern,Nyanza,SIM-NYZ,sample_wellbeing_index,40.0,52.96,12.25,1
+2023-01-01,Kigali City,Nyarugenge,SIM-NYA,sample_wellbeing_index,63.59,49.34,21.91,1
+2023-02-01,Kigali City,Nyarugenge,SIM-NYA,sample_wellbeing_index,65.89,58.84,16.15,1
+2023-03-01,Kigali City,Nyarugenge,SIM-NYA,sample_wellbeing_index,67.78,46.76,23.67,0
+2023-04-01,Kigali City,Nyarugenge,SIM-NYA,sample_wellbeing_index,62.14,61.56,19.58,1
+2023-05-01,Kigali City,Nyarugenge,SIM-NYA,sample_wellbeing_index,62.4,41.67,17.67,0
+2023-06-01,Kigali City,Nyarugenge,SIM-NYA,sample_wellbeing_index,61.33,55.58,26.67,0
+2023-07-01,Kigali City,Nyarugenge,SIM-NYA,sample_wellbeing_index,57.04,50.52,20.09,0
+2023-08-01,Kigali City,Nyarugenge,SIM-NYA,sample_wellbeing_index,56.77,46.46,19.03,0
+2023-09-01,Kigali City,Nyarugenge,SIM-NYA,sample_wellbeing_index,58.43,27.29,12.52,1
+2023-10-01,Kigali City,Nyarugenge,SIM-NYA,sample_wellbeing_index,57.31,50.83,21.95,1
+2023-11-01,Kigali City,Nyarugenge,SIM-NYA,sample_wellbeing_index,57.89,44.18,26.33,0
+2023-12-01,Kigali City,Nyarugenge,SIM-NYA,sample_wellbeing_index,59.42,56.39,14.3,1
+2024-01-01,Kigali City,Nyarugenge,SIM-NYA,sample_wellbeing_index,61.07,55.96,15.21,1
+2024-02-01,Kigali City,Nyarugenge,SIM-NYA,sample_wellbeing_index,65.45,46.81,17.18,1
+2024-03-01,Kigali City,Nyarugenge,SIM-NYA,sample_wellbeing_index,62.32,54.91,21.95,1
+2024-04-01,Kigali City,Nyarugenge,SIM-NYA,sample_wellbeing_index,68.41,48.13,17.49,1
+2024-05-01,Kigali City,Nyarugenge,SIM-NYA,sample_wellbeing_index,62.39,38.05,24.9,0
+2024-06-01,Kigali City,Nyarugenge,SIM-NYA,sample_wellbeing_index,59.83,45.19,23.35,0
+2024-07-01,Kigali City,Nyarugenge,SIM-NYA,sample_wellbeing_index,59.11,44.02,13.77,1
+2024-08-01,Kigali City,Nyarugenge,SIM-NYA,sample_wellbeing_index,57.67,56.13,15.78,1
+2024-09-01,Kigali City,Nyarugenge,SIM-NYA,sample_wellbeing_index,55.49,38.37,11.61,0
+2024-10-01,Kigali City,Nyarugenge,SIM-NYA,sample_wellbeing_index,51.82,46.93,19.95,0
+2024-11-01,Kigali City,Nyarugenge,SIM-NYA,sample_wellbeing_index,56.23,32.79,26.94,0
+2024-12-01,Kigali City,Nyarugenge,SIM-NYA,sample_wellbeing_index,58.54,32.07,19.69,0
+2023-01-01,Western,Rubavu,SIM-RUB,sample_wellbeing_index,40.88,47.21,12.55,1
+2023-02-01,Western,Rubavu,SIM-RUB,sample_wellbeing_index,45.11,60.69,19.16,1
+2023-03-01,Western,Rubavu,SIM-RUB,sample_wellbeing_index,41.83,49.45,13.83,1
+2023-04-01,Western,Rubavu,SIM-RUB,sample_wellbeing_index,42.54,48.31,23.85,1
+2023-05-01,Western,Rubavu,SIM-RUB,sample_wellbeing_index,43.51,46.95,16.34,0
+2023-06-01,Western,Rubavu,SIM-RUB,sample_wellbeing_index,36.14,50.34,22.11,0
+2023-07-01,Western,Rubavu,SIM-RUB,sample_wellbeing_index,36.41,51.58,19.34,0
+2023-08-01,Western,Rubavu,SIM-RUB,sample_wellbeing_index,38.15,60.48,15.46,1
+2023-09-01,Western,Rubavu,SIM-RUB,sample_wellbeing_index,32.62,50.33,26.3,1
+2023-10-01,Western,Rubavu,SIM-RUB,sample_wellbeing_index,37.16,60.88,25.53,1
+2023-11-01,Western,Rubavu,SIM-RUB,sample_wellbeing_index,37.9,48.81,11.28,1
+2023-12-01,Western,Rubavu,SIM-RUB,sample_wellbeing_index,43.63,44.6,16.87,1
+2024-01-01,Western,Rubavu,SIM-RUB,sample_wellbeing_index,42.61,45.2,27.79,0
+2024-02-01,Western,Rubavu,SIM-RUB,sample_wellbeing_index,46.18,44.35,22.49,0
+2024-03-01,Western,Rubavu,SIM-RUB,sample_wellbeing_index,47.13,61.49,25.63,1
+2024-04-01,Western,Rubavu,SIM-RUB,sample_wellbeing_index,46.49,38.55,23.22,0
+2024-05-01,Western,Rubavu,SIM-RUB,sample_wellbeing_index,42.49,42.26,19.71,0
+2024-06-01,Western,Rubavu,SIM-RUB,sample_wellbeing_index,41.79,52.95,15.26,1
+2024-07-01,Western,Rubavu,SIM-RUB,sample_wellbeing_index,41.08,60.63,25.05,1
+2024-08-01,Western,Rubavu,SIM-RUB,sample_wellbeing_index,36.36,46.09,22.96,1
+2024-09-01,Western,Rubavu,SIM-RUB,sample_wellbeing_index,39.75,65.86,26.75,0
+2024-10-01,Western,Rubavu,SIM-RUB,sample_wellbeing_index,37.12,45.67,26.25,1
+2024-11-01,Western,Rubavu,SIM-RUB,sample_wellbeing_index,38.19,50.39,22.79,0
+2024-12-01,Western,Rubavu,SIM-RUB,sample_wellbeing_index,41.03,43.23,24.42,0
+2023-01-01,Eastern,Rwamagana,SIM-RWA,sample_wellbeing_index,53.43,55.26,25.72,0
+2023-02-01,Eastern,Rwamagana,SIM-RWA,sample_wellbeing_index,57.91,55.58,18.53,1
+2023-03-01,Eastern,Rwamagana,SIM-RWA,sample_wellbeing_index,56.72,62.93,17.04,1
+2023-04-01,Eastern,Rwamagana,SIM-RWA,sample_wellbeing_index,58.24,71.64,23.17,1
+2023-05-01,Eastern,Rwamagana,SIM-RWA,sample_wellbeing_index,52.55,36.75,18.87,1
+2023-06-01,Eastern,Rwamagana,SIM-RWA,sample_wellbeing_index,46.87,45.05,10.43,1
+2023-07-01,Eastern,Rwamagana,SIM-RWA,sample_wellbeing_index,50.26,37.57,17.95,1
+2023-08-01,Eastern,Rwamagana,SIM-RWA,sample_wellbeing_index,46.2,37.61,13.42,0
+2023-09-01,Eastern,Rwamagana,SIM-RWA,sample_wellbeing_index,47.33,42.54,25.25,0
+2023-10-01,Eastern,Rwamagana,SIM-RWA,sample_wellbeing_index,44.78,44.72,23.89,0
+2023-11-01,Eastern,Rwamagana,SIM-RWA,sample_wellbeing_index,48.6,33.53,24.49,0
+2023-12-01,Eastern,Rwamagana,SIM-RWA,sample_wellbeing_index,45.49,43.83,22.11,1
+2024-01-01,Eastern,Rwamagana,SIM-RWA,sample_wellbeing_index,52.13,36.7,30.62,0
+2024-02-01,Eastern,Rwamagana,SIM-RWA,sample_wellbeing_index,54.16,39.24,14.98,1
+2024-03-01,Eastern,Rwamagana,SIM-RWA,sample_wellbeing_index,54.74,44.62,17.45,1
+2024-04-01,Eastern,Rwamagana,SIM-RWA,sample_wellbeing_index,53.27,56.28,21.33,1
+2024-05-01,Eastern,Rwamagana,SIM-RWA,sample_wellbeing_index,50.69,56.59,28.04,0
+2024-06-01,Eastern,Rwamagana,SIM-RWA,sample_wellbeing_index,47.97,37.09,20.95,0
+2024-07-01,Eastern,Rwamagana,SIM-RWA,sample_wellbeing_index,47.14,50.12,12.62,1
+2024-08-01,Eastern,Rwamagana,SIM-RWA,sample_wellbeing_index,45.94,49.25,21.16,1
+2024-09-01,Eastern,Rwamagana,SIM-RWA,sample_wellbeing_index,44.77,41.5,25.83,0
+2024-10-01,Eastern,Rwamagana,SIM-RWA,sample_wellbeing_index,43.66,34.38,20.04,0
+2024-11-01,Eastern,Rwamagana,SIM-RWA,sample_wellbeing_index,45.9,54.49,20.17,1
+2024-12-01,Eastern,Rwamagana,SIM-RWA,sample_wellbeing_index,50.18,45.96,18.35,0

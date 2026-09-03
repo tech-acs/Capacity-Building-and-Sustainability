@@ -1,0 +1,2353 @@
+<title>Data to Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,ital@9..144,300..700,0..1&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --ink:#1C2420;
+  --ink-soft:#4B564F;
+  --ink-faint:#7C8A80;
+  --paper:#F4F6F1;
+  --surface:#FFFFFF;
+  --surface-sunken:#EAEDE3;
+  --line:#D8DDD0;
+  --line-strong:#C1C9B8;
+  --accent:#1D6E73;
+  --accent-strong:#154F53;
+  --accent-tint:#DCEBEA;
+  --blue:#2B6CA3;
+  --blue-tint:#DDE9F3;
+  --gold:#9C7124;
+  --gold-tint:#F3E9D3;
+  --ember:#AF4A2E;
+  --ember-tint:#F3E0D8;
+  --indigo:#5B4B8A;
+  --indigo-tint:#E7E3F3;
+  --shadow: 0 1px 2px rgba(28,36,32,.06), 0 8px 24px -12px rgba(28,36,32,.18);
+  --focus: 0 0 0 3px rgba(29,110,115,.35);
+  --code-chrome:#161F1A;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ink:#EAEEE6;
+    --ink-soft:#AFBAAA;
+    --ink-faint:#7C8A80;
+    --paper:#0E1613;
+    --surface:#162019;
+    --surface-sunken:#0F1713;
+    --line:#28352C;
+    --line-strong:#374538;
+    --accent:#59C4C3;
+    --accent-strong:#8FDBD9;
+    --accent-tint:#123333;
+    --blue:#7FB0DE;
+    --blue-tint:#132A3A;
+    --gold:#E0B15E;
+    --gold-tint:#33280F;
+    --ember:#E58D6E;
+    --ember-tint:#331B10;
+    --indigo:#B3A3DE;
+    --indigo-tint:#241C3A;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 30px -12px rgba(0,0,0,.6);
+    --focus: 0 0 0 3px rgba(89,196,195,.4);
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#EAEEE6; --ink-soft:#AFBAAA; --ink-faint:#7C8A80;
+  --paper:#0E1613; --surface:#162019; --surface-sunken:#0F1713;
+  --line:#28352C; --line-strong:#374538;
+  --accent:#59C4C3; --accent-strong:#8FDBD9; --accent-tint:#123333;
+  --blue:#7FB0DE; --blue-tint:#132A3A;
+  --gold:#E0B15E; --gold-tint:#33280F;
+  --ember:#E58D6E; --ember-tint:#331B10;
+  --indigo:#B3A3DE; --indigo-tint:#241C3A;
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 30px -12px rgba(0,0,0,.6);
+  --focus: 0 0 0 3px rgba(89,196,195,.4);
+}
+
+/* ============ BASE ============ */
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  *{animation-duration:.001ms !important; transition-duration:.001ms !important;}
+}
+h1,h2,h3,h4{
+  font-family:"Fraunces", Georgia, serif;
+  color:var(--ink);
+  font-weight:600;
+  text-wrap:balance;
+  line-height:1.18;
+  margin:0;
+}
+a{color:var(--accent);}
+p{margin:0 0 1em;}
+code, pre, .mono{font-family:"JetBrains Mono", ui-monospace, Menlo, monospace;}
+::selection{background:var(--accent-tint); color:var(--ink);}
+:focus-visible{outline:none; box-shadow:var(--focus); border-radius:4px;}
+button{font-family:inherit;}
+
+.skip-link{
+  position:absolute; left:-999px; top:0; background:var(--accent); color:#fff;
+  padding:.6em 1em; z-index:200; border-radius:0 0 6px 0;
+}
+.skip-link:focus{left:0;}
+
+/* ============ SHELL LAYOUT ============ */
+.shell{
+  display:grid;
+  grid-template-columns: 296px minmax(0,1fr);
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "topbar topbar"
+    "sidebar main";
+  min-height:100vh;
+}
+@media (max-width: 900px){
+  .shell{grid-template-columns: 1fr;}
+}
+
+/* ---- top bar ---- */
+.topbar{
+  grid-area: topbar;
+  position:sticky; top:0; z-index:60;
+  display:flex; align-items:center; gap:.9rem;
+  padding:.65rem 1.1rem;
+  background:color-mix(in srgb, var(--surface) 92%, transparent);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.progress{
+  position:absolute; left:0; bottom:-1px; height:2px; width:0%;
+  background:var(--accent); transition:width .12s linear;
+}
+.brand{
+  display:flex; align-items:center; gap:.6rem;
+  text-decoration:none; color:var(--ink); flex:0 0 auto;
+}
+.brand-mark{
+  height:34px; width:auto; max-width:96px; flex:none;
+  display:block; object-fit:contain;
+  background:#FFFFFF; border:1px solid var(--line);
+  border-radius:7px; padding:4px 7px;
+}
+@media (max-width:640px){ .brand-mark{height:30px; padding:3px 6px;} }
+.brand-text{display:flex; flex-direction:column; line-height:1.1;}
+.brand-eyebrow{font-size:.66rem; letter-spacing:.09em; text-transform:uppercase; color:var(--ink-faint); font-weight:600;}
+.brand-title{font-family:"Fraunces", serif; font-weight:600; font-size:1rem;}
+.track-switch{
+  display:inline-flex; border:1px solid var(--line); border-radius:9px; padding:2px; background:var(--surface-sunken);
+  flex:none; margin-left:.4rem;
+}
+.track-btn{
+  border:none; background:none; color:var(--ink-soft); font-size:.8rem; font-weight:600;
+  padding:.34rem .7rem; border-radius:7px; cursor:pointer; white-space:nowrap;
+}
+.track-btn[aria-selected="true"]{background:var(--surface); color:var(--ink); box-shadow:0 1px 2px rgba(0,0,0,.08);}
+@media (max-width:900px){ .track-switch{margin-left:.2rem;} .track-btn{padding:.34rem .55rem; font-size:.76rem;} }
+.hamburger{
+  display:none; border:1px solid var(--line); background:var(--surface); color:var(--ink);
+  width:36px; height:36px; border-radius:8px; cursor:pointer; flex:none;
+  align-items:center; justify-content:center;
+}
+.hamburger svg{width:18px; height:18px;}
+@media (max-width:900px){ .hamburger{display:inline-flex;} }
+@media (max-width:640px){
+  .topbar-search{display:none;}
+  .brand-eyebrow{display:none;}
+  .topbar{gap:.4rem;}
+}
+@media (max-width:480px){
+  .brand-text{display:none;}
+  .track-switch{margin-left:0;}
+  .track-btn{padding:.34rem .5rem; font-size:.74rem;}
+}
+.sidebar-search{position:relative; display:none; margin-bottom:.9rem;}
+.sidebar-search svg{position:absolute; left:.65rem; top:50%; transform:translateY(-50%); width:14px; height:14px; color:var(--ink-faint);}
+.sidebar-search input{
+  width:100%; padding:.5rem .7rem .5rem 2.1rem; border-radius:8px; border:1px solid var(--line);
+  background:var(--surface-sunken); color:var(--ink); font-size:.85rem;
+}
+@media (max-width:900px){ .sidebar-search{display:block;} }
+
+.topbar-search{
+  flex:1 1 auto; max-width:420px; position:relative; margin-left:.3rem;
+}
+.topbar-search input{
+  width:100%; padding:.5rem .8rem .5rem 2.1rem; border-radius:8px;
+  border:1px solid var(--line); background:var(--surface-sunken); color:var(--ink);
+  font-size:.85rem;
+}
+.topbar-search input::placeholder{color:var(--ink-faint);}
+.topbar-search svg{
+  position:absolute; left:.7rem; top:50%; transform:translateY(-50%);
+  width:14px; height:14px; color:var(--ink-faint); pointer-events:none;
+}
+.topbar-spacer{flex:1 1 auto;}
+.theme-toggle{
+  border:1px solid var(--line); background:var(--surface); color:var(--ink);
+  width:36px; height:36px; border-radius:8px; cursor:pointer; flex:none;
+  display:inline-flex; align-items:center; justify-content:center;
+}
+.theme-toggle svg{width:17px; height:17px;}
+.theme-toggle .i-moon{display:none;}
+:root[data-theme="dark"] .theme-toggle .i-sun{display:none;}
+:root[data-theme="dark"] .theme-toggle .i-moon{display:inline-block;}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .theme-toggle .i-sun{display:none;}
+  :root:not([data-theme="light"]) .theme-toggle .i-moon{display:inline-block;}
+}
+
+/* ---- sidebar ---- */
+.sidebar{
+  grid-area: sidebar;
+  border-right:1px solid var(--line);
+  background:var(--surface);
+  position:sticky; top:53px;
+  height:calc(100vh - 53px);
+  overflow-y:auto;
+  padding:1.1rem .85rem 3rem;
+}
+.sidebar::-webkit-scrollbar{width:8px;}
+.sidebar::-webkit-scrollbar-thumb{background:var(--line-strong); border-radius:8px;}
+@media (max-width:900px){
+  .sidebar{
+    position:fixed; left:0; top:53px; bottom:0; width:82vw; max-width:340px;
+    transform:translateX(-100%); transition:transform .22s ease; z-index:55;
+    box-shadow:var(--shadow);
+  }
+  .shell.nav-open .sidebar{transform:translateX(0);}
+  .scrim{
+    display:none; position:fixed; inset:53px 0 0 0; background:rgba(0,0,0,.35); z-index:50;
+  }
+  .shell.nav-open .scrim{display:block;}
+}
+.nav-group{margin-bottom:.15rem;}
+.nav-ch{
+  display:flex; align-items:center; gap:.5rem; width:100%; text-align:left;
+  background:none; border:none; cursor:pointer; color:var(--ink);
+  padding:.5rem .5rem; border-radius:8px; font-size:.86rem; font-weight:600;
+}
+.nav-ch:hover{background:var(--surface-sunken);}
+.nav-ch .num{
+  font-family:"Fraunces", serif; font-weight:600; font-size:.78rem; color:var(--ink-faint);
+  width:1.3em; flex:none;
+}
+.nav-ch .chev{
+  margin-left:auto; width:13px; height:13px; color:var(--ink-faint); transition:transform .16s ease; flex:none;
+}
+.nav-group.open > .nav-ch .chev{transform:rotate(90deg);}
+.nav-sub{
+  list-style:none; margin:0; padding:0 0 .3rem 1.55rem;
+  display:none; border-left:1px solid var(--line); margin-left:.55rem;
+}
+.nav-group.open > .nav-sub{display:block;}
+.nav-sub li{margin:0;}
+.nav-sub a{
+  display:flex; align-items:baseline; gap:.45rem;
+  text-decoration:none; color:var(--ink-soft); font-size:.81rem;
+  padding:.32rem .5rem; border-radius:7px; margin:.05rem 0;
+}
+.nav-sub a:hover{background:var(--surface-sunken); color:var(--ink);}
+.nav-sub a.active{background:var(--accent-tint); color:var(--accent-strong); font-weight:600;}
+.nav-sub .sub-sub{padding-left:1.4rem; font-size:.78rem;}
+.nav-sub .dot{width:6px; height:6px; border-radius:50%; flex:none; background:var(--ink-faint);}
+.u-a .dot{background:var(--accent);} .u-b .dot{background:var(--blue);}
+.u-c .dot{background:var(--gold);} .u-d .dot{background:var(--ember);}
+.u-e .dot{background:var(--indigo);}
+.nav-hidden{display:none !important;}
+
+/* ---- main ---- */
+main{grid-area: main; min-width:0; padding-bottom:6rem;}
+.container{max-width:840px; margin:0 auto; padding:0 1.6rem;}
+.container-wide{max-width:1000px; margin:0 auto; padding:0 1.6rem;}
+@media (max-width:600px){ .container, .container-wide{padding:0 1.1rem;} }
+
+/* ---- hero ---- */
+.hero{
+  padding:3.4rem 0 2.6rem; border-bottom:1px solid var(--line);
+  background:
+    radial-gradient(700px 240px at 85% -10%, var(--accent-tint), transparent 70%);
+}
+.hero-eyebrow{
+  font-size:.72rem; letter-spacing:.11em; text-transform:uppercase; font-weight:700;
+  color:var(--accent-strong); margin-bottom:.9rem; display:flex; align-items:center; gap:.5rem;
+}
+.hero-eyebrow::before{content:""; width:22px; height:2px; background:var(--accent); display:inline-block;}
+.hero h1{font-size:clamp(2rem, 4.4vw, 3.05rem); letter-spacing:-.01em;}
+.hero p.lede{
+  margin-top:1.1rem; font-size:1.1rem; color:var(--ink-soft); max-width:56ch;
+}
+.hero-stats{display:flex; flex-wrap:wrap; gap:1.7rem; margin-top:2rem;}
+.stat b{
+  display:block; font-family:"Fraunces", serif; font-size:1.6rem; font-weight:600; color:var(--ink);
+}
+.stat span{font-size:.76rem; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.06em;}
+
+/* ============ CONTENT TYPOGRAPHY ============ */
+.chapter{padding-top:3.2rem; scroll-margin-top:70px;}
+.chapter-head{margin-bottom:1.5rem;}
+.chapter-kicker{
+  font-family:"Fraunces", serif; font-size:.95rem; color:var(--ink-faint); font-weight:500; font-style:italic;
+}
+.chapter h2{font-size:clamp(1.55rem, 3vw, 2.05rem); margin-top:.15rem;}
+.chapter > .container > p, .chapter > .container-wide > p{color:var(--ink-soft); max-width:66ch;}
+.section{padding-top:2.5rem; scroll-margin-top:70px;}
+.section h3{font-size:1.3rem; padding-bottom:.5rem; border-bottom:1px solid var(--line); margin-bottom:1rem;}
+.prose{max-width:68ch; color:var(--ink-soft);}
+.prose strong{color:var(--ink);}
+ul.plain, ol.plain{padding-left:1.3rem; color:var(--ink-soft);}
+ul.plain li, ol.plain li{margin-bottom:.55rem;}
+ul.plain li::marker{color:var(--accent);}
+.callout{
+  border:1px solid var(--line); border-left:3px solid var(--accent);
+  background:var(--surface); border-radius:0 10px 10px 0;
+  padding:1rem 1.2rem; margin:1.3rem 0; box-shadow:var(--shadow);
+}
+.callout-title{
+  display:flex; align-items:center; gap:.5rem; font-weight:700; font-size:.85rem;
+  color:var(--accent-strong); margin-bottom:.4rem; text-transform:uppercase; letter-spacing:.03em;
+}
+.callout-title svg{width:15px; height:15px;}
+.callout p:last-child{margin-bottom:0;}
+.callout.data{border-left-color:var(--gold);}
+.callout.data .callout-title{color:var(--gold);}
+.callout.rai{border-left-color:var(--indigo);}
+.callout.rai .callout-title{color:var(--indigo);}
+
+/* ---- tables ---- */
+.tablewrap{overflow-x:auto; margin:1.3rem 0; border:1px solid var(--line); border-radius:10px; box-shadow:var(--shadow);}
+table{border-collapse:collapse; width:100%; font-size:.87rem; min-width:520px;}
+thead th{
+  background:var(--code-chrome); color:#F4F6F1; text-align:left; font-weight:600;
+  padding:.6rem .9rem; font-size:.78rem; letter-spacing:.02em; white-space:nowrap;
+}
+tbody td{padding:.6rem .9rem; border-top:1px solid var(--line); vertical-align:top;}
+tbody tr:nth-child(even){background:var(--surface-sunken);}
+td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
+
+/* ---- links list / cards ---- */
+.linkgrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:.9rem; margin:1.3rem 0;}
+.linkcard{
+  border:1px solid var(--line); border-radius:10px; padding:1rem 1.1rem; background:var(--surface);
+  text-decoration:none; color:var(--ink); display:block; box-shadow:var(--shadow);
+}
+.linkcard:hover{border-color:var(--accent);}
+.linkcard .tag{font-size:.68rem; text-transform:uppercase; letter-spacing:.07em; color:var(--gold); font-weight:700;}
+.linkcard h4{font-family:"Public Sans",sans-serif; font-size:.94rem; font-weight:700; margin:.35rem 0 .3rem;}
+.linkcard p{font-size:.82rem; color:var(--ink-soft); margin:0;}
+
+/* ---- code blocks & tabs ---- */
+.codeblock{
+  border:1px solid var(--line); border-radius:10px; overflow:hidden; margin:1rem 0 1.4rem;
+  background:var(--surface-sunken); box-shadow:var(--shadow);
+}
+.codeblock-head{
+  display:flex; align-items:center; background:var(--code-chrome); padding:0 .4rem;
+}
+.tab-btn{
+  border:none; background:none; color:#B9C2B4; cursor:pointer; font-family:"JetBrains Mono",monospace;
+  font-size:.74rem; font-weight:600; padding:.55rem .85rem; letter-spacing:.02em;
+  display:flex; align-items:center; gap:.4rem; border-bottom:2px solid transparent;
+}
+.tab-btn .chip{width:7px; height:7px; border-radius:50%; flex:none;}
+.tab-btn.py .chip{background:var(--blue);}
+.tab-btn.r .chip{background:var(--gold);}
+.tab-btn[aria-selected="true"]{color:#fff; border-bottom-color:var(--accent);}
+.codeblock-label{margin-left:auto; font-size:.68rem; color:#7f8b80; padding-right:.7rem; font-family:"JetBrains Mono",monospace;}
+.codepanel{display:none; margin:0; padding:.9rem 1.05rem; overflow-x:auto;}
+.codepanel.active{display:block;}
+.codepanel pre{margin:0;}
+.codepanel code{
+  font-size:.79rem; line-height:1.62; color:var(--ink); white-space:pre;
+}
+.tok-c{color:var(--ink-faint); font-style:italic;}
+.tok-s{color:var(--ember);}
+.tok-k{color:var(--blue); font-weight:600;}
+:root[data-theme="dark"] .tok-k, .codepanel .tok-k{color:var(--blue);}
+
+/* ---- module cards ---- */
+.unit-block{padding-top:2.6rem; scroll-margin-top:70px;}
+.unit-head{
+  display:flex; align-items:flex-start; gap:1rem; padding-bottom:1rem; margin-bottom:1.6rem;
+  border-bottom:1px solid var(--line);
+}
+.unit-num{
+  font-family:"Fraunces", serif; font-weight:300; font-size:2.6rem; line-height:1; flex:none;
+  color:var(--unit-color, var(--accent));
+}
+.unit-head h3{font-size:1.5rem;}
+.unit-head p{color:var(--ink-soft); margin:.3rem 0 0; max-width:60ch;}
+.unit-weeks{
+  font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--unit-color, var(--accent));
+  font-weight:700; margin-top:.5rem; display:block;
+}
+
+.module{
+  border:1px solid var(--line); border-left:4px solid var(--unit-color, var(--accent));
+  border-radius:0 12px 12px 0; padding:1.5rem 1.6rem 1.7rem; margin-bottom:1.6rem;
+  background:var(--surface); scroll-margin-top:70px; box-shadow:var(--shadow);
+}
+.module-head{display:flex; align-items:baseline; flex-wrap:wrap; gap:.5rem .9rem; margin-bottom:.35rem;}
+.module-head h4{font-size:1.18rem; color:var(--ink);}
+.module-week{
+  font-size:.72rem; color:var(--unit-color, var(--accent)); font-weight:700; text-transform:uppercase; letter-spacing:.04em;
+  background:var(--unit-tint, var(--accent-tint)); padding:.15rem .55rem; border-radius:20px;
+}
+.module-overview{color:var(--ink-soft); font-style:italic; font-size:.94rem; margin-bottom:1.1rem;}
+.module h5{
+  font-family:"Public Sans",sans-serif; font-size:.72rem; text-transform:uppercase; letter-spacing:.07em;
+  color:var(--ink-faint); font-weight:700; margin:1.1rem 0 .5rem;
+}
+.module h5:first-of-type{margin-top:0;}
+.obj-list{list-style:none; margin:0; padding:0;}
+.obj-list li{padding-left:1.15rem; position:relative; margin-bottom:.5rem; font-size:.92rem;}
+.obj-list li::before{content:"→"; position:absolute; left:0; color:var(--unit-color, var(--accent));}
+.obj-level{font-weight:700; color:var(--unit-color, var(--accent));}
+.obj-bloom{color:var(--ink-faint); font-style:italic; font-size:.85em;}
+.topics-text{font-size:.92rem; color:var(--ink-soft);}
+.toolrow{display:flex; gap:.6rem; flex-wrap:wrap; font-size:.86rem;}
+.toolpill{
+  display:flex; align-items:center; gap:.4rem; border:1px solid var(--line); border-radius:20px;
+  padding:.28rem .75rem .28rem .55rem; background:var(--surface-sunken);
+}
+.toolpill .chip{width:8px; height:8px; border-radius:50%;}
+.toolpill.py .chip{background:var(--blue);} .toolpill.r .chip{background:var(--gold);}
+.repo-links{display:flex; gap:.6rem; flex-wrap:wrap; font-size:.86rem; margin-bottom:.2rem;}
+.repo-link{
+  display:inline-flex; align-items:center; gap:.4rem; border:1px solid var(--line); border-radius:20px;
+  padding:.28rem .75rem .28rem .55rem; background:var(--surface-sunken); color:var(--ink-soft);
+  text-decoration:none; transition:border-color .15s, color .15s;
+}
+.repo-link:hover{border-color:var(--accent); color:var(--ink);}
+.repo-link .chip{width:8px; height:8px; border-radius:50%;}
+.repo-link.py .chip{background:var(--blue);} .repo-link.r .chip{background:var(--gold);}
+.repo-link.colab{padding-left:.75rem;}
+.kv{font-size:.9rem; margin-bottom:.5rem;}
+.kv b{color:var(--ink); font-weight:700;}
+.kv.rai{
+  background:var(--indigo-tint); border-radius:8px; padding:.6rem .8rem; margin-top:1rem;
+}
+.kv.rai b{color:var(--indigo);}
+
+/* ---- diagram ---- */
+.diagram-wrap{overflow-x:auto; margin:1.6rem 0 .6rem; padding-bottom:.3rem;}
+.diagram-wrap svg{display:block; min-width:760px; width:100%; height:auto;}
+.dbox rect{fill:var(--surface); stroke:var(--line-strong); stroke-width:1.3;}
+.dbox.src rect{stroke:var(--ink-faint); stroke-dasharray:3 3;}
+.dbox.cap rect{stroke:var(--ink); stroke-width:2.2;}
+.dbox .eyebrow{fill:var(--ink-faint); font-size:8.5px; letter-spacing:.06em; text-transform:uppercase; font-family:"Public Sans",sans-serif; font-weight:700;}
+.dbox .label{fill:var(--ink); font-size:12px; font-family:"Public Sans",sans-serif; font-weight:700;}
+.dbox.u-a .eyebrow, .dbox.u-a rect{color:var(--accent);}
+.dbox.u-b .eyebrow{color:var(--blue);} .dbox.u-c .eyebrow{color:var(--gold);}
+.dbox.u-d .eyebrow{color:var(--ember);} .dbox.u-e .eyebrow{color:var(--indigo);}
+.dbox.u-a rect{stroke:var(--accent);} .dbox.u-b rect{stroke:var(--blue);}
+.dbox.u-c rect{stroke:var(--gold);} .dbox.u-d rect{stroke:var(--ember);} .dbox.u-e rect{stroke:var(--indigo);}
+.dflow line{stroke:var(--ink-faint); stroke-width:1.4;}
+figure.diagram{margin:0;}
+figcaption.diagram-cap{font-size:.86rem; color:var(--ink-faint); margin-top:.7rem; max-width:66ch;}
+
+/* ---- capstone rubric bars ---- */
+.rubric{margin:1.4rem 0;}
+.rubric-row{display:grid; grid-template-columns:230px 1fr 3ch; align-items:center; gap:.8rem; margin-bottom:.65rem; font-size:.87rem;}
+.rubric-row .rlabel{color:var(--ink-soft);}
+.rubric-track{height:9px; background:var(--surface-sunken); border-radius:6px; overflow:hidden; border:1px solid var(--line);}
+.rubric-fill{height:100%; border-radius:6px; background:var(--accent);}
+.rubric-row .rpts{text-align:right; font-variant-numeric:tabular-nums; color:var(--ink); font-weight:600;}
+
+/* ---- footer / misc ---- */
+.divider{border:none; border-top:1px solid var(--line); margin:2.6rem 0;}
+.backtotop{
+  display:inline-flex; align-items:center; gap:.4rem; font-size:.82rem; color:var(--ink-faint);
+  text-decoration:none; margin-top:.5rem;
+}
+footer.site{
+  border-top:1px solid var(--line); padding:2.4rem 0 3rem; margin-top:3rem; color:var(--ink-faint); font-size:.83rem;
+}
+footer.site a{color:var(--ink-soft);}
+.badge-row{display:flex; gap:.5rem; flex-wrap:wrap; margin-top:1.6rem;}
+.badge{
+  font-size:.72rem; border:1px solid var(--line); border-radius:20px; padding:.25rem .7rem; color:var(--ink-soft);
+}
+</style>
+
+<div class="shell" id="shell">
+  <a class="skip-link" href="#main-start">Skip to content</a>
+
+  <header class="topbar">
+    <div class="progress" id="progress"></div>
+    <button class="hamburger" id="hamburger" aria-label="Toggle chapter navigation" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <a class="brand" href="#top">
+      <img class="brand-mark" src="data:image/png;base64,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" alt="UN Economic Commission for Africa (ECA)">
+      <span class="brand-text">
+        <span class="brand-eyebrow">UN Regional Hub Program</span>
+        <span class="brand-title" id="brandTitle">Track 2 &middot; Data to Hub</span>
+      </span>
+    </a>
+    <div class="track-switch" id="trackSwitch" role="tablist" aria-label="Select track">
+      <button class="track-btn" data-track-btn="track1" role="tab" aria-selected="false">Track 1</button>
+      <button class="track-btn" data-track-btn="track2" role="tab" aria-selected="true">Track 2</button>
+    </div>
+    <div class="topbar-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input id="navFilter" type="search" placeholder="Filter chapters, modules, tools..." autocomplete="off">
+    </div>
+    <span class="topbar-spacer"></span>
+    <a class="theme-toggle" href="#" data-repo-link target="_blank" rel="noopener" aria-label="Open the GitHub repository">
+      <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.39 7.86 10.91.57.11.78-.25.78-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.52-1.34-1.28-1.7-1.28-1.7-1.04-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.21-1.49 3.18-1.18 3.18-1.18.63 1.59.23 2.77.11 3.06.74.8 1.19 1.83 1.19 3.09 0 4.43-2.7 5.41-5.26 5.69.41.36.78 1.06.78 2.14 0 1.55-.01 2.79-.01 3.17 0 .3.2.66.79.55A10.51 10.51 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5z"/></svg>
+    </a>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle light and dark theme">
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><line x1="12" y1="2" x2="12" y2="4.5"/><line x1="12" y1="19.5" x2="12" y2="22"/><line x1="2" y1="12" x2="4.5" y2="12"/><line x1="19.5" y1="12" x2="22" y2="12"/><line x1="4.6" y1="4.6" x2="6.3" y2="6.3"/><line x1="17.7" y1="17.7" x2="19.4" y2="19.4"/><line x1="4.6" y1="19.4" x2="6.3" y2="17.7"/><line x1="17.7" y1="6.3" x2="19.4" y2="4.6"/></svg>
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>
+    </button>
+  </header>
+
+  <div class="scrim" id="scrim"></div>
+
+  <nav class="sidebar" id="sidebar" aria-label="Chapters">
+    <div class="sidebar-search" id="sidebarSearchWrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input id="navFilterMobile" type="search" placeholder="Filter chapters, modules, tools..." autocomplete="off">
+    </div>
+    <div id="sidebarTreeTrack1" class="sidebar-tree-panel" hidden><!-- populated by JS --></div>
+    <div id="sidebarTreeTrack2" class="sidebar-tree-panel"><!-- populated by JS --></div>
+  </nav>
+
+  <main id="main-start">
+    <div id="top"></div>
+
+    <div id="track-panel-track2" class="track-panel">
+    <!-- ============ HERO ============ -->
+    <section class="hero">
+      <div class="container-wide">
+        <div class="hero-eyebrow">UN Regional Hub E-Learning Program</div>
+        <h1>Visualization, Analytic Hubs<br>&amp; Responsible AI</h1>
+        <p class="lede">The Track 2 curriculum, rebuilt as a working site: ten modules, dual Python &amp; R code
+          throughout, and a real, freely reachable regional dataset: Rwanda's NISR household survey data
+          joined to HDX administrative boundaries, running end to end from Module 1 to the capstone.</p>
+        <div class="hero-stats">
+          <div class="stat"><b>9</b><span>Weeks</span></div>
+          <div class="stat"><b>10</b><span>Modules</span></div>
+          <div class="stat"><b>2</b><span>Languages, every module</span></div>
+          <div class="stat"><b>1</b><span>Dataset, start to capstone</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CHAPTER 1 : OVERVIEW ============ -->
+    <section class="chapter" id="ch-1">
+      <div class="container-wide">
+        <div class="chapter-head">
+          <div class="chapter-kicker">Chapter 1</div>
+          <h2>Overview</h2>
+        </div>
+
+        <div class="section" id="ch-1-1">
+          <h3>1.1 &nbsp;Purpose &amp; prerequisite</h3>
+          <p class="prose">Track 2 turns a trustworthy, standardized regional dataset into dashboards, forecasts,
+            and AI-assisted narration, with Responsible AI and governance woven through the track rather than
+            taught as a single bolt-on module. Admission requires Track 1 certification, at least 70% on the
+            Track 1 capstone. Track 1's capstone output, an integrated, standardized, documented, quality-assured
+            dataset, is exactly what Track 2 Module 1 assumes. On this site, that handoff is a real dataset:
+            see Chapter 3.</p>
+        </div>
+
+        <div class="section" id="ch-1-2">
+          <h3>1.2 &nbsp;Design principles applied to this track</h3>
+          <ul class="plain">
+            <li><strong>Python &amp; R, side by side.</strong> Every technical module ships both languages, so
+              participants specialize while still able to read colleagues' code.</li>
+            <li><strong>One evolving dataset.</strong> The same regional dataset is reused module to module, so
+              skills compound instead of resetting with each example.</li>
+            <li><strong>Responsible AI woven throughout.</strong> Modules 1, 4, 6, 7, and 8 each carry an explicit
+              data-ethics or governance callback, so the formal frameworks in Modules 9&ndash;10 land as
+              reinforcement of habits already practiced.</li>
+            <li><strong>Flexible pacing.</strong> The track compresses to a 2-week in-person intensive or extends
+              to a 9+ week self-paced cohort with mentor office hours, without rewriting content.</li>
+          </ul>
+        </div>
+
+        <div class="section" id="ch-1-3">
+          <h3>1.3 &nbsp;Track at a glance</h3>
+          <div class="tablewrap">
+            <table>
+              <thead><tr><th>Unit</th><th>Weeks</th><th>Modules</th><th>Focus</th></tr></thead>
+              <tbody id="glanceTable"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="section" id="ch-1-4">
+          <h3>1.4 &nbsp;How the dataset moves through the track</h3>
+          <p class="prose">One dataset, drawn from Rwanda's national statistics office and the UN's own
+            humanitarian data platform, is cleaned once and then carried through every unit, gaining a
+            chart, a map, a dashboard, a forecast, and a governance audit on the way to the capstone.</p>
+          <div class="diagram-wrap">
+            <figure class="diagram">
+              <svg viewBox="0 0 1260 190" role="img" aria-label="A flow diagram showing the NISR and HDX dataset entering at the left, passing through Units A through E where it is cleaned and charted, made interactive and mapped, wired into a hub, forecast and modeled, and audited for fairness, before arriving at the Track 2 capstone on the right.">
+                <defs>
+                  <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                    <path d="M0,0 L10,5 L0,10 z" fill="currentColor" style="color:var(--ink-faint)"/>
+                  </marker>
+                </defs>
+                <g class="dflow">
+                  <line x1="160" y1="86" x2="199" y2="86" marker-end="url(#arrow)"/>
+                  <line x1="340" y1="86" x2="379" y2="86" marker-end="url(#arrow)"/>
+                  <line x1="520" y1="86" x2="559" y2="86" marker-end="url(#arrow)"/>
+                  <line x1="700" y1="86" x2="739" y2="86" marker-end="url(#arrow)"/>
+                  <line x1="880" y1="86" x2="919" y2="86" marker-end="url(#arrow)"/>
+                  <line x1="1060" y1="86" x2="1099" y2="86" marker-end="url(#arrow)"/>
+                </g>
+                <g class="dbox src">
+                  <rect x="20" y="50" width="140" height="72" rx="9"/>
+                  <text class="eyebrow" x="34" y="72">Source</text>
+                  <text class="label" x="34" y="90">NISR + HDX</text>
+                  <text class="label" x="34" y="105">Rwanda data</text>
+                </g>
+                <g class="dbox u-a">
+                  <rect x="200" y="50" width="140" height="72" rx="9"/>
+                  <text class="eyebrow" x="214" y="72">Unit A</text>
+                  <text class="label" x="214" y="90">Clean &amp;</text>
+                  <text class="label" x="214" y="105">chart</text>
+                </g>
+                <g class="dbox u-b">
+                  <rect x="380" y="50" width="140" height="72" rx="9"/>
+                  <text class="eyebrow" x="394" y="72">Unit B</text>
+                  <text class="label" x="394" y="90">Interact &amp;</text>
+                  <text class="label" x="394" y="105">map on P-code</text>
+                </g>
+                <g class="dbox u-c">
+                  <rect x="560" y="50" width="140" height="72" rx="9"/>
+                  <text class="eyebrow" x="574" y="72">Unit C</text>
+                  <text class="label" x="574" y="90">Wire into</text>
+                  <text class="label" x="574" y="105">analytic hub</text>
+                </g>
+                <g class="dbox u-d">
+                  <rect x="740" y="50" width="140" height="72" rx="9"/>
+                  <text class="eyebrow" x="754" y="72">Unit D</text>
+                  <text class="label" x="754" y="90">Forecast &amp;</text>
+                  <text class="label" x="754" y="105">model</text>
+                </g>
+                <g class="dbox u-e">
+                  <rect x="920" y="50" width="140" height="72" rx="9"/>
+                  <text class="eyebrow" x="934" y="72">Unit E</text>
+                  <text class="label" x="934" y="90">Audit &amp;</text>
+                  <text class="label" x="934" y="105">govern</text>
+                </g>
+                <g class="dbox cap">
+                  <rect x="1100" y="50" width="140" height="72" rx="9"/>
+                  <text class="eyebrow" x="1114" y="72">Capstone</text>
+                  <text class="label" x="1114" y="90">Regional</text>
+                  <text class="label" x="1114" y="105">analytic hub</text>
+                </g>
+              </svg>
+              <figcaption class="diagram-cap">The same NISR/HDX-derived dataset flows through every unit, accumulating a chart, a map, a hub, a forecast, and a governance audit on its way to the Track 2 capstone.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CHAPTER 2 : ENVIRONMENT ============ -->
+    <section class="chapter" id="ch-2">
+      <div class="container-wide">
+        <div class="chapter-head">
+          <div class="chapter-kicker">Chapter 2</div>
+          <h2>Setting up your work environment</h2>
+        </div>
+        <p class="prose">Set this up once, before Module 1. Both languages are installed side by side; participants
+          work in whichever is their primary language for a given exercise and switch to the other for the porting
+          exercise in Module 6.</p>
+
+        <div class="section" id="ch-2-1">
+          <h3>2.1 &nbsp;Isolated environments &amp; package installation</h3>
+          <div id="envSetupCode"></div>
+        </div>
+
+        <div class="section" id="ch-2-2">
+          <h3>2.2 &nbsp;Suggested project structure</h3>
+          <div id="folderCode"></div>
+        </div>
+
+        <div class="section" id="ch-2-3">
+          <h3>2.3 &nbsp;Required libraries &amp; packages, by domain</h3>
+          <p class="prose">The consolidated list below is the superset used across all ten modules; each module's
+            own Tools panel repeats only what is newly introduced that module.</p>
+          <div class="tablewrap">
+            <table>
+              <thead><tr><th>Domain</th><th>Python</th><th>R</th></tr></thead>
+              <tbody id="pkgTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CHAPTER 3 : THE DATASET ============ -->
+    <section class="chapter" id="ch-3">
+      <div class="container-wide">
+        <div class="chapter-head">
+          <div class="chapter-kicker">Chapter 3</div>
+          <h2>The regional dataset</h2>
+        </div>
+        <p class="prose">Every earlier version of this curriculum pointed to an abstract &ldquo;Track 1 capstone
+          dataset.&rdquo; This site names an actual one: a household survey from Rwanda's national statistics
+          office, joined to administrative boundaries from the UN's own humanitarian data platform. Both are real,
+          both are reachable without a data-sharing agreement with a specific government office, and together they
+          carry every exercise in this track, from Module 1's first bar chart to the capstone's fairness audit.</p>
+
+        <div class="section" id="ch-3-1">
+          <h3>3.1 &nbsp;Primary dataset: NISR microdata</h3>
+          <p class="prose">The <strong>National Institute of Statistics of Rwanda (NISR)</strong> publishes household
+            and establishment survey microdata through its Central Data Catalog, including the
+            <strong>Integrated Household Living Conditions Survey (EICV)</strong>, currently in its seventh round
+            (EICV7, 2023&ndash;2024), the <strong>Labour Force Survey</strong>, and the <strong>Population and
+            Housing Census</strong>. Catalog browsing is open to anyone; downloading a full microdata extract
+            typically requires a free account and acceptance of that dataset's stated access policy, the same
+            NADA-style pattern used by national statistics offices across the region.</p>
+          <p class="prose">For a zero-registration starting point, NISR's <strong>Data Sharing Platform</strong> and
+            its published census indicator tables provide district- and sector-level aggregates that are enough to
+            drive every chart, map, and dashboard exercise through Unit C without waiting on a microdata access
+            request.</p>
+          <div class="linkgrid">
+            <a class="linkcard" href="https://microdata.statistics.gov.rw/" target="_blank" rel="noopener">
+              <span class="tag">Microdata</span>
+              <h4>NISR Central Data Catalog</h4>
+              <p>Household &amp; establishment survey microdata, browsable by anyone, downloadable after free registration.</p>
+            </a>
+            <a class="linkcard" href="https://data.gov.rw/datasets" target="_blank" rel="noopener">
+              <span class="tag">Open data</span>
+              <h4>Rwanda Data Sharing Platform</h4>
+              <p>Open, no-registration indicator tables and datasets from government agencies, including NISR.</p>
+            </a>
+            <a class="linkcard" href="https://statistics.gov.rw/data-sources/surveys/EICV" target="_blank" rel="noopener">
+              <span class="tag">Survey</span>
+              <h4>EICV Survey Series</h4>
+              <p>Background, questionnaires, and round-by-round documentation for the household living-conditions survey.</p>
+            </a>
+          </div>
+        </div>
+
+        <div class="section" id="ch-3-2">
+          <h3>3.2 &nbsp;Geospatial layer: HDX administrative boundaries</h3>
+          <p class="prose">The <strong>Humanitarian Data Exchange (HDX)</strong>, run by UN OCHA, publishes Rwanda's
+            Common Operational Dataset for Administrative Boundaries (COD-AB): province, district, and sector
+            polygons, each carrying a P-code. No registration is required and the license is open. This is the
+            exact join key Track 2 Module 4 is built around, and it is the same P-code discipline Track 1 teaches,
+            so the geospatial join a participant writes in Module 4 is not a toy exercise, it is the join a hub
+            analyst actually runs.</p>
+          <div class="linkgrid">
+            <a class="linkcard" href="https://data.humdata.org/group/rwa" target="_blank" rel="noopener">
+              <span class="tag">Geospatial</span>
+              <h4>HDX &middot; Rwanda</h4>
+              <p>All Rwanda datasets on HDX, including subnational administrative boundaries and population layers.</p>
+            </a>
+            <a class="linkcard" href="https://data.humdata.org/dataset/2768bdfd-6486-4963-8e3d-e63149478eb4" target="_blank" rel="noopener">
+              <span class="tag">P-codes</span>
+              <h4>Rwanda Subnational Boundaries</h4>
+              <p>Province, district &amp; sector polygons with P-codes: the shapefile Module 4's choropleth is built on.</p>
+            </a>
+            <a class="linkcard" href="https://data.humdata.org/dataset/global-pcodes" target="_blank" rel="noopener">
+              <span class="tag">Reference</span>
+              <h4>Global P-Code List</h4>
+              <p>The full cross-country P-code reference table, useful once a cohort compares more than one country.</p>
+            </a>
+          </div>
+        </div>
+
+        <div class="section" id="ch-3-3">
+          <h3>3.3 &nbsp;Loading &amp; cleaning the handoff dataset</h3>
+          <p class="prose">This step is done once, in Module 1, and the resulting processed file is what every
+            later module's code examples read from. Column names below are illustrative: each survey round ships
+            its own codebook on the NISR catalog page, and the cleaning step should be adjusted to match it.</p>
+          <div id="dataLoadCode"></div>
+          <div class="callout data">
+            <div class="callout-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+              Illustrative schema
+            </div>
+            <p><code>data/processed/track2_dataset.csv</code> has columns <code>date</code>, <code>province</code>,
+              <code>district</code>, <code>district_pcode</code> (matches HDX <code>ADM2_PCODE</code>),
+              <code>indicator</code>, <code>value</code>. Downstream code examples in Chapter 4 assume this shape;
+              rename to match whichever EICV, LFS, or census extract a cohort actually pulls.</p>
+          </div>
+        </div>
+
+        <div class="section" id="ch-3-4">
+          <h3>3.4 &nbsp;Other national statistics offices across Africa</h3>
+          <p class="prose">The pattern this chapter is built on, a national statistics office's microdata catalog
+            joined to HDX administrative boundaries, is not particular to Rwanda. Most African NSOs run the same
+            NADA-based catalog software NISR does, so a hub running this track for a different country swaps the
+            source and keeps every notebook, join, and dashboard unchanged. Four verified examples, one per
+            region, plus the pattern generalizes to the rest of the African Union's 55 member states.</p>
+          <div class="tablewrap">
+            <table>
+              <thead><tr><th>Country</th><th>Office</th><th>Catalog</th><th>Notes</th></tr></thead>
+              <tbody id="nsoTable"></tbody>
+            </table>
+          </div>
+          <p class="prose">Two cross-country alternatives are worth knowing alongside the country-by-country
+            catalogs above: <strong>the DHS Program</strong> (dhsprogram.com), Demographic and Health Survey
+            microdata covering most African countries on a comparable indicator set, useful when a cohort wants
+            cross-country comparison built into Unit D's forecasting exercise; and <strong>HDX's own country
+            groups</strong> for the matching COD-AB boundary layer, keeping the P-code join pattern from Module 4
+            identical regardless of which country's data drives the cohort.</p>
+        </div>
+
+        <div class="section" id="ch-3-5">
+          <h3>3.5 &nbsp;Population surfaces: WorldPop</h3>
+          <p class="prose"><strong>WorldPop</strong>, a research group at the University of Southampton, publishes
+            high-resolution gridded population estimates (as fine as 100m cells) for every African country,
+            including age- and sex-structured layers. It fills a gap none of the survey-based sources above cover:
+            a denominator. A district's raw case count from EICV or a census table means little without a
+            population figure to turn it into a rate, and WorldPop's grids let a participant compute that rate at
+            a finer resolution than the census's own reporting units. It is a natural population-weighting layer
+            for Module 4's choropleths and a common data source in UN and humanitarian analysis specifically
+            because of that resolution.</p>
+          <div class="linkgrid">
+            <a class="linkcard" href="https://hub.worldpop.org/" target="_blank" rel="noopener">
+              <span class="tag">Geospatial</span>
+              <h4>WorldPop Data Hub</h4>
+              <p>Gridded population counts and density, by country and year, downloadable as GeoTIFF rasters.</p>
+            </a>
+            <a class="linkcard" href="https://data.humdata.org/dataset/worldpop-population-counts-for-world" target="_blank" rel="noopener">
+              <span class="tag">Mirror</span>
+              <h4>WorldPop on HDX</h4>
+              <p>The same population layers, mirrored on the Humanitarian Data Exchange alongside the Rwanda COD-AB boundaries from 3.2.</p>
+            </a>
+          </div>
+        </div>
+
+        <div class="section" id="ch-3-6">
+          <h3>3.6 &nbsp;Macro indicators &amp; cross-country microdata: World Bank</h3>
+          <p class="prose">The <strong>World Bank</strong> runs two separate, complementary catalogs. <strong>World
+            Bank Open Data</strong> serves the World Development Indicators, thousands of macro time series
+            (GDP, poverty, health, infrastructure) for every country back decades, reachable through a documented
+            REST API with no key required, a good fit for Module 7's forecasting exercise when a cohort wants
+            national-level context alongside the district-level NISR series. The separate <strong>Microdata
+            Library</strong> hosts household-survey microdata directly, including the Living Standards Measurement
+            Study (LSMS) panel surveys run across a dozen African countries, a second microdata option alongside
+            the national NSO catalogs in 3.4.</p>
+          <div class="linkgrid">
+            <a class="linkcard" href="https://data.worldbank.org/" target="_blank" rel="noopener">
+              <span class="tag">Indicators</span>
+              <h4>World Bank Open Data</h4>
+              <p>World Development Indicators, free API access, no registration, decades of country-level time series.</p>
+            </a>
+            <a class="linkcard" href="https://microdata.worldbank.org/index.php/collections/lsms" target="_blank" rel="noopener">
+              <span class="tag">Microdata</span>
+              <h4>LSMS &middot; Microdata Library</h4>
+              <p>Living Standards Measurement Study panel surveys, a second household-microdata source across many African countries.</p>
+            </a>
+            <a class="linkcard" href="https://datahelpdesk.worldbank.org/knowledgebase/articles/889392-about-the-indicators-api-documentation" target="_blank" rel="noopener">
+              <span class="tag">API docs</span>
+              <h4>Indicators API</h4>
+              <p>The REST API behind Open Data: query any indicator, country, and year range directly from Python or R.</p>
+            </a>
+          </div>
+        </div>
+
+        <div class="section" id="ch-3-7">
+          <h3>3.7 &nbsp;Regional &amp; thematic sources</h3>
+          <p class="prose">Two further sources round out what a regional hub typically reaches for.
+            <strong>Afrobarometer</strong> is a public-attitudes survey run across more than 30 African countries,
+            covering governance, service delivery, and trust, a useful complement when a cohort's dashboard needs
+            a perception indicator alongside NISR's material indicators. The <strong>African Development Bank's</strong>
+            Africa Information Highway aggregates macroeconomic and social statistics across AfDB member countries
+            in one queryable portal, a continental-scale alternative to pulling from each country's NSO one at a
+            time.</p>
+          <div class="linkgrid">
+            <a class="linkcard" href="https://www.afrobarometer.org/data/" target="_blank" rel="noopener">
+              <span class="tag">Survey</span>
+              <h4>Afrobarometer Data</h4>
+              <p>Public-attitude and governance survey data, 30+ countries, geocoded rounds available for mapping.</p>
+            </a>
+            <a class="linkcard" href="https://dataportal.opendataforafrica.org/" target="_blank" rel="noopener">
+              <span class="tag">Continental</span>
+              <h4>Africa Information Highway</h4>
+              <p>AfDB's continent-wide statistical portal: macroeconomic and social indicators across member countries.</p>
+            </a>
+          </div>
+        </div>
+
+        <div class="section" id="ch-3-8">
+          <h3>3.8 &nbsp;Web scraping for data collection</h3>
+          <p class="prose">Every source above ships a bulk download or an API, which is exactly why they are
+            listed first. Occasionally a number only exists in an HTML table on a ministry or NSO web page with
+            no download link. A light, respectful scrape is the tool for that last-resort case, not a default way
+            to reach for data that a catalog above already serves.</p>
+          <div class="callout rai">
+            <div class="callout-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              Before scraping anything
+            </div>
+            <p>Check the site's <code>robots.txt</code> and terms of use. Prefer an official API or bulk CSV when
+              one exists, every source in this chapter has one. Rate-limit requests and identify the script with a
+              real User-Agent. Cache what is fetched locally instead of re-hitting the site on every re-run. Never
+              scrape personal or sensitive data even where it is technically reachable: the OCHA Data
+              Responsibility Guidelines a participant meets formally in Module 9 apply here just as much as to any
+              other data source.</p>
+          </div>
+          <div id="scrapeCode"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CHAPTER 4 : CURRICULUM (data-driven) ============ -->
+    <section class="chapter" id="ch-4">
+      <div class="container-wide">
+        <div class="chapter-head">
+          <div class="chapter-kicker">Chapter 4</div>
+          <h2>Module-by-module curriculum</h2>
+        </div>
+        <p class="prose">Five units, ten modules. Every technical module below ships a working Python and R
+          example against the Chapter 3 dataset, plus the exercise and formative check that feeds the capstone
+          rubric in Chapter 5. Each module also links straight to its runnable notebook pair in the course
+          repository, viewable on GitHub, openable in Colab, or reachable locally after the <code>git
+          clone</code> in Chapter 2.</p>
+        <div id="curriculumRoot"></div>
+      </div>
+    </section>
+
+    <!-- ============ CHAPTER 5 : CAPSTONE ============ -->
+    <section class="chapter" id="ch-5">
+      <div class="container-wide">
+        <div class="chapter-head">
+          <div class="chapter-kicker">Chapter 5 &middot; Week 9</div>
+          <h2>Capstone: regional analytic hub with Responsible AI safeguards</h2>
+        </div>
+        <div class="kv"><b>Deliverable.</b> A working, deployed or locally runnable, multi-filter analytic hub
+          built on the Chapter 3 dataset, incorporating at minimum: one interactive chart; one map correctly
+          joined on P-codes; one forecast or interpretable model with visible uncertainty; the Module 6
+          AI-assisted analytics pattern built to the schema-only / local-execution / summary-only standard; and
+          a completed Ethical Impact Assessment plus fairness/sustainability note.</div>
+        <div class="kv"><b>Format.</b> Live demo, full source code (with the Module 6 component represented in
+          both languages), and written Responsible AI documentation.</div>
+        <div class="kv"><b>Certification.</b> 70% or higher earns the Track 2 completion certificate. Combined
+          with Track 1 certification, this completes the program-level credential: <strong>UN Regional Hub Data
+          &amp; AI Practitioner</strong>.</div>
+
+        <h3 style="margin-top:2rem; font-size:1.05rem; border:none; padding:0;">Capstone rubric &middot; 100 points</h3>
+        <div class="rubric" id="rubricBars"></div>
+      </div>
+    </section>
+
+    <!-- ============ CHAPTER 6 : ASSESSMENT MAP ============ -->
+    <section class="chapter" id="ch-6">
+      <div class="container-wide">
+        <div class="chapter-head">
+          <div class="chapter-kicker">Chapter 6</div>
+          <h2>Assessment map</h2>
+        </div>
+        <p class="prose">Every competency domain touched by Track 2 is evaluated at more than one point: a
+          formative check while the skill is being built, module by module, and a summative check in the capstone
+          rubric where it must be combined with every other domain.</p>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Competency domain</th><th>Formative assessment</th><th>Capstone rubric line</th></tr></thead>
+            <tbody id="mapTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CHAPTER 7 : CERTIFICATION ============ -->
+    <section class="chapter" id="ch-7">
+      <div class="container-wide">
+        <div class="chapter-head">
+          <div class="chapter-kicker">Chapter 7</div>
+          <h2>Certification &amp; program completion</h2>
+        </div>
+        <p class="prose">Module-level assessments (quizzes, exercises, worksheets, peer reviews, live demos) are
+          checklist- or short-rubric-graded and intentionally lower-stakes: their purpose is fast feedback, not
+          gatekeeping. The capstone is graded against the weighted 100-point rubric in Chapter 5. A participant
+          who has completed both Track 1 and Track 2 capstones at 70% or higher each holds the program-level
+          credential: <strong>UN Regional Hub Data &amp; AI Practitioner</strong>, someone who can take
+          regional data from raw source to a governed, Responsible-AI-safeguarded analytic hub, in both Python
+          and R.</p>
+        <div class="badge-row">
+          <span class="badge">Track 1 &ge; 70%</span>
+          <span class="badge">Track 2 &ge; 70%</span>
+          <span class="badge">= UN Regional Hub Data &amp; AI Practitioner</span>
+        </div>
+        <a class="backtotop" href="#top">&uarr; Back to top</a>
+      </div>
+    </section>
+    </div><!-- /track-panel-track2 -->
+
+    <div id="track-panel-track1" class="track-panel" hidden>
+    <!-- ============ HERO (Track 1) ============ -->
+    <section class="hero">
+      <div class="container-wide">
+        <div class="hero-eyebrow">UN Regional Hub E-Learning Program</div>
+        <h1>Data Integration, Standards,<br>Metadata &amp; Quality</h1>
+        <p class="lede">The Track 1 curriculum, rebuilt as a working site: ten modules, dual Python &amp; R code
+          throughout, and a real reproducible pipeline that ingests three messy partner-style sources and
+          publishes the exact dataset Track 2 reads, proving the handoff instead of just describing it.</p>
+        <div class="hero-stats">
+          <div class="stat"><b>10</b><span>Weeks</span></div>
+          <div class="stat"><b>10</b><span>Modules</span></div>
+          <div class="stat"><b>2</b><span>Languages, every module</span></div>
+          <div class="stat"><b>3</b><span>Raw sources, one published dataset</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ T1 CHAPTER 1 : OVERVIEW ============ -->
+    <section class="chapter" id="t1-ch-1">
+      <div class="container-wide">
+        <div class="chapter-head">
+          <div class="chapter-kicker">Chapter 1</div>
+          <h2>Overview</h2>
+        </div>
+
+        <div class="section" id="t1-ch-1-1">
+          <h3>1.1 &nbsp;Track rationale</h3>
+          <p class="prose">Track 1 is the foundation the rest of the curriculum stands on. Before a regional
+            indicator can be visualized, modeled, or narrated by an AI assistant (Track 2), it has to be pulled
+            together from multiple source systems, harmonized against shared standards, documented so someone
+            other than its creator can trust and reuse it, and checked for quality. This track builds that
+            discipline, in order, because each stage depends on the one before it: data integration,
+            interoperability standards, metadata, and data quality management.</p>
+          <p class="prose">The track draws directly on the standards the UN system already uses for this work:
+            the Humanitarian Exchange Language (HXL) and OCHA's Common Operational Datasets (CODs) and P-codes;
+            the International Aid Transparency Initiative (IATI) standard; the Statistical Data and Metadata
+            Exchange (SDMX) standard; and the UN National Quality Assurance Framework (NQAF) Manual. Participants
+            finish the track with a dataset, and the reusable pipeline that produced it, ready to feed directly
+            into Track 2.</p>
+        </div>
+
+        <div class="section" id="t1-ch-1-2">
+          <h3>1.2 &nbsp;Design principles applied to this track</h3>
+          <ul class="plain">
+            <li><strong>Python &amp; R, side by side.</strong> Every technical module ships both languages, as in
+              Track 2, rather than as separate tracks.</li>
+            <li><strong>One evolving pipeline.</strong> A single multi-source regional dataset is reused module to
+              module, so the Module 10 governance note and the capstone are built on the same pipeline
+              participants have maintained since Module 1, not a fresh example.</li>
+            <li><strong>Never drop, always flag.</strong> Every harmonization and validation step in this track
+              surfaces failures for review rather than silently discarding rows, a habit that carries straight
+              into Track 2's Responsible AI practice.</li>
+            <li><strong>Flexible pacing.</strong> The 10-week structure compresses to a 2-week in-person intensive
+              (Units A&ndash;B in week 1, C&ndash;E plus capstone in week 2) or extends for a fully self-paced
+              cohort with mentor office hours.</li>
+          </ul>
+        </div>
+
+        <div class="section" id="t1-ch-1-3">
+          <h3>1.3 &nbsp;Track at a glance</h3>
+          <div class="tablewrap">
+            <table>
+              <thead><tr><th>Unit</th><th>Weeks</th><th>Modules</th><th>Focus</th></tr></thead>
+              <tbody id="glanceTableT1"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="section" id="t1-ch-1-4">
+          <h3>1.4 &nbsp;How the dataset moves through the track</h3>
+          <p class="prose">Three raw, inconsistently-shaped source files enter at Module 1. Every unit performs
+            one stage of the pipeline on them, in order, until Module 9 publishes exactly
+            <code>data/processed/track2_dataset.csv</code>, the same file Track 2 Module 1 reads. Chapter 3 has
+            the details; the notebooks make it runnable.</p>
+          <div class="diagram-wrap">
+            <figure class="diagram">
+              <svg viewBox="0 0 1260 190" role="img" aria-label="A flow diagram showing three raw partner sources entering at the left, passing through Units A through E where they are ingested, standardized against P-codes, documented, validated, and published, before arriving at the exact Track 2 dataset on the right.">
+                <defs>
+                  <marker id="arrow-t1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                    <path d="M0,0 L10,5 L0,10 z" fill="currentColor" style="color:var(--ink-faint)"/>
+                  </marker>
+                </defs>
+                <g class="dflow">
+                  <line x1="160" y1="86" x2="199" y2="86" marker-end="url(#arrow-t1)"/>
+                  <line x1="340" y1="86" x2="379" y2="86" marker-end="url(#arrow-t1)"/>
+                  <line x1="520" y1="86" x2="559" y2="86" marker-end="url(#arrow-t1)"/>
+                  <line x1="700" y1="86" x2="739" y2="86" marker-end="url(#arrow-t1)"/>
+                  <line x1="880" y1="86" x2="919" y2="86" marker-end="url(#arrow-t1)"/>
+                  <line x1="1060" y1="86" x2="1099" y2="86" marker-end="url(#arrow-t1)"/>
+                </g>
+                <g class="dbox src">
+                  <rect x="20" y="50" width="140" height="72" rx="9"/>
+                  <text class="eyebrow" x="34" y="72">Source</text>
+                  <text class="label" x="34" y="90">3 partner</text>
+                  <text class="label" x="34" y="105">exports</text>
+                </g>
+                <g class="dbox u-a">
+                  <rect x="200" y="50" width="140" height="72" rx="9"/>
+                  <text class="eyebrow" x="214" y="72">Unit A</text>
+                  <text class="label" x="214" y="90">Ingest &amp;</text>
+                  <text class="label" x="214" y="105">extract</text>
+                </g>
+                <g class="dbox u-b">
+                  <rect x="380" y="50" width="140" height="72" rx="9"/>
+                  <text class="eyebrow" x="394" y="72">Unit B</text>
+                  <text class="label" x="394" y="90">Standardize</text>
+                  <text class="label" x="394" y="105">on P-codes</text>
+                </g>
+                <g class="dbox u-c">
+                  <rect x="560" y="50" width="140" height="72" rx="9"/>
+                  <text class="eyebrow" x="574" y="72">Unit C</text>
+                  <text class="label" x="574" y="90">Document</text>
+                  <text class="label" x="574" y="105">&amp; catalog</text>
+                </g>
+                <g class="dbox u-d">
+                  <rect x="740" y="50" width="140" height="72" rx="9"/>
+                  <text class="eyebrow" x="754" y="72">Unit D</text>
+                  <text class="label" x="754" y="90">Validate</text>
+                  <text class="label" x="754" y="105">&amp; profile</text>
+                </g>
+                <g class="dbox u-e">
+                  <rect x="920" y="50" width="140" height="72" rx="9"/>
+                  <text class="eyebrow" x="934" y="72">Unit E</text>
+                  <text class="label" x="934" y="90">Publish &amp;</text>
+                  <text class="label" x="934" y="105">govern</text>
+                </g>
+                <g class="dbox cap">
+                  <rect x="1100" y="50" width="140" height="72" rx="9"/>
+                  <text class="eyebrow" x="1114" y="72">Handoff</text>
+                  <text class="label" x="1114" y="90">track2_</text>
+                  <text class="label" x="1114" y="105">dataset.csv</text>
+                </g>
+              </svg>
+              <figcaption class="diagram-cap">The Module 9 notebook runs this whole chain and writes
+                <code>data/processed/track2_dataset.csv</code> directly &mdash; the same file Track 2's
+                <code>data/make_sample_data.py</code> shortcut also produces, byte-for-byte identical in every
+                cell, because both are seeded from the same synthetic source.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ T1 CHAPTER 2 : ENVIRONMENT ============ -->
+    <section class="chapter" id="t1-ch-2">
+      <div class="container-wide">
+        <div class="chapter-head">
+          <div class="chapter-kicker">Chapter 2</div>
+          <h2>Setting up your work environment</h2>
+        </div>
+        <p class="prose">Set this up once, before Module 1. It shares the same clone and the same repository as
+          Track 2 &mdash; there is only one environment to set up for both tracks.</p>
+
+        <div class="section" id="t1-ch-2-1">
+          <h3>2.1 &nbsp;Isolated environments &amp; package installation</h3>
+          <div id="envSetupCodeT1"></div>
+        </div>
+
+        <div class="section" id="t1-ch-2-2">
+          <h3>2.2 &nbsp;Suggested project structure</h3>
+          <div id="folderCodeT1"></div>
+        </div>
+
+        <div class="section" id="t1-ch-2-3">
+          <h3>2.3 &nbsp;Required libraries &amp; packages, by domain</h3>
+          <p class="prose">Track 1 adds connectivity, standards, and validation packages on top of the core data
+            packages Track 2 also uses.</p>
+          <div class="tablewrap">
+            <table>
+              <thead><tr><th>Domain</th><th>Python</th><th>R</th></tr></thead>
+              <tbody id="pkgTableT1"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ T1 CHAPTER 3 : SOURCE DATA ============ -->
+    <section class="chapter" id="t1-ch-3">
+      <div class="container-wide">
+        <div class="chapter-head">
+          <div class="chapter-kicker">Chapter 3</div>
+          <h2>The source data for this track</h2>
+        </div>
+
+        <div class="section" id="t1-ch-3-1">
+          <h3>3.1 &nbsp;Three partner-style raw sources</h3>
+          <p class="prose">Rather than one clean file, Track 1 starts from what a regional hub actually receives:
+            three exports that describe the same ten Rwandan districts but disagree on column names and date
+            formats. All three, and the gazetteer that reconciles them, are generated by
+            <code>data/make_track1_sources.py</code> and live in <code>data/raw/</code> once you run it.</p>
+          <div class="tablewrap">
+            <table>
+              <thead><tr><th>File</th><th>Shape</th><th>Supplies</th></tr></thead>
+              <tbody>
+                <tr><td><code>partner_a_finance_export.csv</code></td><td>ERP/financial-style: <code>reg</code>,
+                  <code>rev</code>, <code>date</code> in <code>DD/MM/YYYY</code></td><td>the <code>value</code>
+                  column</td></tr>
+                <tr><td><code>partner_b_survey_export.csv</code></td><td>KoBo/ODK-style: <code>region_name</code>,
+                  <code>collection_date</code> in <code>D-Mon-YY</code>, two features</td><td><code>feature_1</code>,
+                  <code>feature_2</code></td></tr>
+                <tr><td><code>partner_c_hdx_pull.csv</code></td><td>already-tidy HDX-style pull: P-code-keyed,
+                  ISO dates</td><td><code>district_pcode</code>, <code>indicator</code>, <code>outcome</code></td></tr>
+                <tr><td><code>cod_ab_gazetteer.csv</code></td><td>the authoritative district name &rarr; P-code
+                  lookup</td><td>the join key for everything above</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="section" id="t1-ch-3-2">
+          <h3>3.2 &nbsp;Messy on purpose</h3>
+          <p class="prose">Two rows, one in Partner A and one in Partner B, carry a deliberately misspelled
+            district name (<code>"Nyarugenge Dist."</code>, a trailing space on <code>"Rwamagana "</code>) so
+            Module 4's unmatched-row check has something real to catch and fix, not just describe. Every other
+            row is generated from the exact same seeded values Track 2's dataset uses, split apart into these
+            three shapes rather than fabricated separately, so a correctly-run pipeline reconciles them back to
+            identical numbers.</p>
+        </div>
+
+        <div class="section" id="t1-ch-3-3">
+          <h3>3.3 &nbsp;Loading and cleaning a raw source</h3>
+          <p class="prose">The pattern every module's ingestion code follows: rename, deduplicate, and coerce
+            types before anything gets merged.</p>
+          <div id="dataLoadCodeT1"></div>
+        </div>
+
+        <div class="section" id="t1-ch-3-4">
+          <h3>3.4 &nbsp;The handoff, verified</h3>
+          <p class="prose">Module 9's pipeline notebook does not just describe publishing the integrated dataset,
+            it writes <code>data/processed/track2_dataset.csv</code> directly, then re-reads it to confirm the
+            row count and date range. Run <code>data/make_track1_sources.py</code> once, work through the ten
+            Track 1 notebooks, and Track 2's Module 1 dataset is exactly what your own pipeline produced, not a
+            separately-provided shortcut.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ T1 CHAPTER 4 : CURRICULUM (data-driven) ============ -->
+    <section class="chapter" id="t1-ch-4">
+      <div class="container-wide">
+        <div class="chapter-head">
+          <div class="chapter-kicker">Chapter 4</div>
+          <h2>Module-by-module curriculum</h2>
+        </div>
+        <p class="prose">Five units, ten modules. Each module also links straight to its runnable notebook pair
+          in the course repository, viewable on GitHub, openable in Colab, or reachable locally after the
+          <code>git clone</code> in Chapter 2.</p>
+        <div id="curriculumRootT1"></div>
+      </div>
+    </section>
+
+    <!-- ============ T1 CHAPTER 5 : CAPSTONE ============ -->
+    <section class="chapter" id="t1-ch-5">
+      <div class="container-wide">
+        <div class="chapter-head">
+          <div class="chapter-kicker">Chapter 5 &middot; Week 10</div>
+          <h2>Capstone: end-to-end regional data integration pipeline</h2>
+        </div>
+        <div class="kv"><b>Deliverable.</b> In pairs or small groups: ingestion from at least two sources (one
+          pulled programmatically, one local file); harmonization via P-codes and HXL tagging with unmatched
+          rows flagged and reviewed, not dropped; automated validation rules with a pass/fail run log; a
+          generated data dictionary and catalog entry; and a completed pipeline governance note.</div>
+        <div class="kv"><b>Format.</b> An analysis-ready, standardized, documented, quality-assured dataset,
+          suitable to feed directly into a Track 2 dashboard or AI-assisted analytics hub without further
+          cleanup.</div>
+        <div class="kv"><b>Certification.</b> 70% or higher earns the Track 1 completion certificate and clears
+          enrollment in Track 2, whose Module 1 assumes exactly this kind of dataset as its starting point.</div>
+
+        <h3 style="margin-top:2rem; font-size:1.05rem; border:none; padding:0;">Capstone rubric &middot; 100 points</h3>
+        <div class="rubric" id="rubricBarsT1"></div>
+      </div>
+    </section>
+
+    <!-- ============ T1 CHAPTER 6 : ASSESSMENT MAP ============ -->
+    <section class="chapter" id="t1-ch-6">
+      <div class="container-wide">
+        <div class="chapter-head">
+          <div class="chapter-kicker">Chapter 6</div>
+          <h2>Assessment map</h2>
+        </div>
+        <p class="prose">Every unit is evaluated at more than one point: a formative check while the skill is
+          being built, module by module, and a summative check in the capstone rubric where it must be combined
+          with every other unit.</p>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Unit</th><th>Formative assessment</th><th>Capstone rubric line</th></tr></thead>
+            <tbody id="mapTableT1"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ T1 CHAPTER 7 : CERTIFICATION ============ -->
+    <section class="chapter" id="t1-ch-7">
+      <div class="container-wide">
+        <div class="chapter-head">
+          <div class="chapter-kicker">Chapter 7</div>
+          <h2>Certification &amp; program completion</h2>
+        </div>
+        <p class="prose">Module-level assessments (quizzes, exercises, worksheets, peer reviews) are checklist-
+          or short-rubric-graded and intentionally lower-stakes: their purpose is fast feedback, not gatekeeping.
+          The capstone is graded against the weighted 100-point rubric in Chapter 5. Participants who pass the
+          Track 1 capstone at 70% or higher receive the Track 1 completion certificate and are cleared to enroll
+          in Track 2, whose Module 1 assumes exactly this kind of integrated, standardized, documented,
+          quality-assured dataset as its starting point.</p>
+        <div class="badge-row">
+          <span class="badge">Track 1 &ge; 70%</span>
+          <span class="badge">Track 2 &ge; 70%</span>
+          <span class="badge">= UN Regional Hub Data &amp; AI Practitioner</span>
+        </div>
+        <a class="backtotop" href="#top">&uarr; Back to top</a>
+      </div>
+    </section>
+    </div><!-- /track-panel-track1 -->
+
+    <footer class="site">
+      <div class="container-wide">
+        <p>UN Regional Hub E-Learning Program &middot; a two-track curriculum, each with its own companion site
+          content and runnable notebooks in this repository. Track 1 builds and governs the regional dataset;
+          Track 2 visualizes, models, and narrates it. Dataset guidance sourced from the NISR Central Data
+          Catalog and HDX Rwanda, current as of publication. Column names and access steps should be checked
+          against each dataset's own catalog page before a cohort run.</p>
+        <p>This page is generated from the same repository that holds all twenty runnable Jupyter notebooks
+          (ten per track), the synthetic sample dataset, and both dashboard apps: <a id="footerRepoLink"
+          data-repo-link href="#" target="_blank" rel="noopener"></a>. One <code>git clone</code> gets
+          everything on this site.</p>
+      </div>
+    </footer>
+  </main>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ============================================================
+   THEME
+   ============================================================ */
+var root = document.documentElement;
+try{
+  var saved = localStorage.getItem("t2-theme");
+  if(saved) root.setAttribute("data-theme", saved);
+}catch(e){}
+document.getElementById("themeToggle").addEventListener("click", function(){
+  var mq = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  var current = root.getAttribute("data-theme") || (mq ? "dark" : "light");
+  var next = current === "dark" ? "light" : "dark";
+  root.setAttribute("data-theme", next);
+  try{ localStorage.setItem("t2-theme", next); }catch(e){}
+});
+
+/* ============================================================
+   REPO LINKS
+   This site and the runnable notebooks live in the same GitHub
+   repository: this page is served from its /docs folder via
+   GitHub Pages, and `git clone` on that same repo gets every
+   notebook, app, and the data generator. Edit REPO.owner once,
+   after pushing, to point these links at the real repo.
+   ============================================================ */
+var REPO = { owner:"seknewna", name:"Capacity-Building-and-Sustainability", branch:"main" };
+function repoUrl(){ return "https://github.com/"+REPO.owner+"/"+REPO.name; }
+function githubUrl(path){ return repoUrl()+"/blob/"+REPO.branch+"/"+path; }
+function colabUrl(path){ return "https://colab.research.google.com/github/"+REPO.owner+"/"+REPO.name+"/blob/"+REPO.branch+"/"+path; }
+document.querySelectorAll("[data-repo-link]").forEach(function(a){
+  a.setAttribute("href", repoUrl());
+});
+var footerRepoLink = document.getElementById("footerRepoLink");
+if(footerRepoLink) footerRepoLink.textContent = "github.com/"+REPO.owner+"/"+REPO.name;
+
+/* Module number -> notebook folder slug, matches generate_repo.py exactly */
+var SLUG_BY_NUM = {
+  1:"01-visual-grammar-chart-selection", 2:"02-static-charts",
+  3:"03-interactive-visualization", 4:"04-geospatial-analysis",
+  5:"05-dashboard-foundations", 6:"06-ai-assisted-analytics-pattern",
+  7:"07-forecasting", 8:"08-interpretable-models",
+  9:"09-responsible-ai-eia", 10:"10-bias-fairness-audit"
+};
+var SLUG_BY_NUM_T1 = {
+  1:"01-principles-data-integration", 2:"02-connecting-extracting-sources",
+  3:"03-core-data-standards", 4:"04-applying-standards-harmonizing",
+  5:"05-metadata-fundamentals", 6:"06-metadata-catalogs-dictionaries",
+  7:"07-data-quality-frameworks", 8:"08-automated-validation-profiling",
+  9:"09-reproducible-pipeline", 10:"10-governance-responsibility-sustainability"
+};
+function notebookLinksHTML(num, track){
+  var slugMap = track === "track1" ? SLUG_BY_NUM_T1 : SLUG_BY_NUM;
+  var slug = slugMap[num];
+  if(!slug) return "";
+  var base = track === "track1" ? "notebooks/track1/module-"+slug+"/" : "notebooks/module-"+slug+"/";
+  return '<div class="repo-links">'+
+    '<a class="repo-link py" href="'+githubUrl(base+"python.ipynb")+'" target="_blank" rel="noopener">'+
+      '<span class="chip"></span>Open Python notebook on GitHub</a>'+
+    '<a class="repo-link colab" href="'+colabUrl(base+"python.ipynb")+'" target="_blank" rel="noopener">'+
+      'Open in Colab</a>'+
+    '<a class="repo-link r" href="'+githubUrl(base+"r.ipynb")+'" target="_blank" rel="noopener">'+
+      '<span class="chip"></span>Open R notebook on GitHub</a>'+
+  '</div>';
+}
+
+/* ============================================================
+   CONTENT DATA
+   ============================================================ */
+var UNITS = [
+  {
+    id:"a", letter:"A", num:"01", title:"Foundations of Visualization", weeks:"1–2",
+    blurb:"Establishes the visual grammar and static-charting fluency every later module assumes, applied from day one to the Rwanda dataset.",
+    color:"var(--accent)", tint:"var(--accent-tint)",
+    modules:[
+      {
+        num:1, title:"Visual Grammar & Chart Selection", week:"1",
+        overview:"Before touching a plotting library, participants learn to reason about a chart the way they would reason about a sentence: what claim is it making about the data, and does the chosen form support or undermine that claim.",
+        objectives:[
+          {level:"Foundational", bloom:"Understand", text:"Select an appropriate chart type for a stated data question: comparison, distribution, composition, relationship, or trend over time."},
+          {level:"Foundational", bloom:"Understand", text:"Identify a specific flaw in a misleading chart (truncated axis, dual-axis distortion, 3D distortion, cherry-picked range)."}
+        ],
+        topics:"Grammar of graphics (mark, channel, scale); pre-attentive attributes; a chart-type decision tree; common distortions and how to spot them; an introduction to the “house style” concept built toward in Module 2.",
+        tools:{python:"None yet. Critique material drawn from the matplotlib/seaborn gallery.", r:"None yet. Critique material drawn from the R Graph Gallery (ggplot2 examples)."},
+        exercise:"Chart-critique worksheet: given six charts (three from real regional reporting, three constructed to mislead), identify the flaw in each and sketch the corrected chart type.",
+        assessment:"Knowledge check / quiz: chart-type matching plus flaw identification.",
+        rai:"A misleading chart is a data-integrity failure, not just a design failure. This connects forward to Module 9's Ethical Impact Assessment, where how findings are visualized is itself a responsibility question."
+      },
+      {
+        num:2, title:"Static Charts in Python & R", week:"2",
+        overview:"Participants build the muscle memory of translating a Module 1 chart-type decision into working code in both languages, applied to the EICV/census extract from Chapter 3.",
+        objectives:[
+          {level:"Intermediate", bloom:"Apply", text:"Build publication-quality static charts (bar, line, distribution, small multiples) with a consistent, reusable house style."},
+          {level:"Intermediate", bloom:"Apply", text:"Apply Module 1 principles to a real regional dataset: correct chart type, honest scale, accessible color."}
+        ],
+        topics:"Layered grammar (ggplot2) vs. object-oriented grammar (matplotlib/seaborn); theming and house-style functions; color for accessibility (colorblind-safe palettes, sufficient contrast); faceting and small multiples; annotation and titling for a non-technical reader.",
+        tools:{python:"matplotlib, seaborn", r:"ggplot2 (+ patchwork for composing multi-panel figures)"},
+        code:{
+python:
+"import pandas as pd\nimport matplotlib.pyplot as plt\nimport seaborn as sns\n\ndf = pd.read_csv(\"data/processed/track2_dataset.csv\")\n\ndef house_style(ax, title):\n    ax.set_title(title, fontsize=13, fontweight=\"bold\")\n    sns.despine(ax=ax)\n    ax.grid(axis=\"y\", alpha=0.3)\n    return ax\n\nfig, ax = plt.subplots(figsize=(7, 4))\nsns.barplot(\n    data=df, x=\"district\", y=\"value\",\n    ax=ax, color=\"#1D6E73\"\n)\nhouse_style(ax, \"Value by District\")\nfig.savefig(\"outputs/district_bar.png\", dpi=150, bbox_inches=\"tight\")",
+r:
+"library(tidyverse)\n\ndf <- read_csv(\"data/processed/track2_dataset.csv\")\n\nhouse_theme <- theme_minimal(base_size = 12) +\n  theme(\n    plot.title = element_text(face = \"bold\"),\n    panel.grid.minor = element_blank()\n  )\n\np <- ggplot(df, aes(x = district, y = value)) +\n  geom_col(fill = \"#1D6E73\") +\n  labs(title = \"Value by District\", x = NULL, y = NULL) +\n  house_theme\n\nggsave(\"outputs/district_bar.png\", p, width = 7, height = 4, dpi = 150)"
+        },
+        exercise:"Recreate the same set of five charts from the Chapter 3 dataset in both matplotlib/seaborn and ggplot2, each wrapped in a reusable house-style theme function.",
+        assessment:"Hands-on scripted exercise, graded submission: house-style function plus five charts in both languages, checklist-graded.",
+        peer:"Design-checklist review of a classmate's chart set, using the same checklist a facilitator would grade against."
+      }
+    ]
+  },
+  {
+    id:"b", letter:"B", num:"02", title:"Interactive & Geospatial Visualization", weeks:"3–4",
+    blurb:"Extends static charts into interactive and geospatial forms, reactivating the P-code discipline built in Track 1.",
+    color:"var(--blue)", tint:"var(--blue-tint)",
+    modules:[
+      {
+        num:3, title:"Interactive Visualization", week:"3",
+        overview:"Extends static charting into the interactive layer that the Unit C dashboards will be built on.",
+        objectives:[
+          {level:"Intermediate", bloom:"Apply", text:"Build interactive charts with hover, zoom, and filter behavior, in both languages."},
+          {level:"Intermediate", bloom:"Apply", text:"Judge when interactivity clarifies a chart versus when it only adds noise to something meant for a static report."}
+        ],
+        topics:"plotly in both languages; tooltip and hover-template design; linked filtering as a precursor to dashboard widgets; exporting an interactive chart as standalone HTML for a stakeholder with no server access.",
+        tools:{python:"plotly / plotly express", r:"plotly (native, or via the ggplotly() bridge)"},
+        code:{
+python:
+"import pandas as pd\nimport plotly.express as px\n\ndf = pd.read_csv(\"data/processed/track2_dataset.csv\")\n\nfig = px.line(\n    df, x=\"date\", y=\"value\", color=\"province\",\n    hover_data={\"value\": \":.1f\"},\n    title=\"Provincial Trend Over Time\"\n)\nfig.update_layout(template=\"simple_white\")\nfig.write_html(\"outputs/trend_interactive.html\")",
+r:
+"library(tidyverse)\nlibrary(plotly)\n\ndf <- read_csv(\"data/processed/track2_dataset.csv\")\n\np <- ggplot(df, aes(date, value, color = province)) +\n  geom_line() +\n  labs(title = \"Provincial Trend Over Time\")\n\nip <- ggplotly(p, tooltip = c(\"date\", \"value\", \"province\"))\nhtmlwidgets::saveWidget(ip, \"outputs/trend_interactive.html\")"
+        },
+        exercise:"Convert two Module 2 static charts into interactive versions with meaningful, non-default hover text; export each as a standalone HTML file.",
+        assessment:"Hands-on scripted exercise, checklist-graded."
+      },
+      {
+        num:4, title:"Geospatial Analysis & Mapping on P-codes", week:"4",
+        overview:"Builds directly on the P-code join skills from Track 1 and extends the Data Visualization & Communication domain into its geospatial form, using the HDX Rwanda boundary layer from Chapter 3.",
+        objectives:[
+          {level:"Foundational", bloom:"Understand", text:"Distinguish point data from polygon/boundary data; explain why averaging coordinates produces a misleading centroid."},
+          {level:"Intermediate", bloom:"Apply", text:"Build bubble maps and choropleths correctly joined on P-codes, with an appropriate sequential or diverging color scale."}
+        ],
+        topics:"Simple features (sf / geopandas); joining tabular data to HDX administrative-boundary shapefiles on P-codes rather than district names; choropleth vs. bubble map and when each misleads; sequential vs. diverging color scales; static maps vs. interactive maps.",
+        tools:{python:"geopandas, folium", r:"sf, leaflet"},
+        code:{
+python:
+"import geopandas as gpd\nimport folium\n\nadmin = gpd.read_file(\n    \"data/raw/rwa_admbnda_adm2_nisr_2020.geojson\"\n)  # HDX COD-AB, has 'ADM2_PCODE'\nmerged = admin.merge(\n    df, left_on=\"ADM2_PCODE\", right_on=\"district_pcode\"\n)\n\ncentroid = merged.geometry.centroid\nm = folium.Map(\n    location=[centroid.y.mean(), centroid.x.mean()],\n    zoom_start=8\n)\nfolium.Choropleth(\n    geo_data=merged, data=merged,\n    columns=[\"district_pcode\", \"value\"],\n    key_on=\"feature.properties.ADM2_PCODE\",\n    fill_color=\"YlGnBu\", legend_name=\"Value\"\n).add_to(m)\nm.save(\"outputs/choropleth.html\")",
+r:
+"library(sf)\nlibrary(leaflet)\n\nadmin <- st_read(\n  \"data/raw/rwa_admbnda_adm2_nisr_2020.geojson\"\n)  # HDX COD-AB, has 'ADM2_PCODE'\nmerged <- admin |>\n  left_join(df, by = c(\"ADM2_PCODE\" = \"district_pcode\"))\n\npal <- colorNumeric(\"YlGnBu\", domain = merged$value)\n\nleaflet(merged) |>\n  addPolygons(\n    fillColor = ~pal(value), fillOpacity = 0.8,\n    color = \"white\", weight = 1\n  ) |>\n  addLegend(pal = pal, values = ~value, title = \"Value\")"
+        },
+        exercise:"Join the Chapter 3 dataset to the HDX Rwanda district boundary layer on P-codes; produce one choropleth and one bubble map in both languages, with a written justification of the chosen color scale.",
+        assessment:"Hands-on scripted exercise plus a data-quality note documenting any join failures caused by P-code mismatches. This is the formative line behind the Geospatial Analysis domain.",
+        rai:"A granular choropleth of a small population subgroup, a single sector with a handful of households, can itself be a re-identification or protection risk. This previews Module 6's data-minimization pattern and Module 9's formal governance treatment."
+      }
+    ]
+  },
+  {
+    id:"c", letter:"C", num:"03", title:"Analytic Hubs", weeks:"5–6",
+    blurb:"Assembles individual charts and maps into a working, multi-filter analytic hub, the deliverable form the capstone requires, and introduces the track's signature AI-assisted analytics pattern.",
+    color:"var(--gold)", tint:"var(--gold-tint)",
+    modules:[
+      {
+        num:5, title:"Dashboard Foundations", week:"5",
+        overview:"Moves from individual charts to an assembled, multi-filter analytic product, the deliverable form the track capstone requires.",
+        objectives:[
+          {level:"Foundational", bloom:"Understand", text:"Explain what distinguishes an analytic hub from a static report; sketch a basic architecture and audience-persona wireframe."},
+          {level:"Intermediate", bloom:"Apply (started)", text:"Wire a single chart and a single filter into a minimal working app."}
+        ],
+        topics:"Reactive vs. request-response dashboard architecture; audience personas and wireframing before writing code; Streamlit vs. Dash vs. Shiny, and when to pick which; basic state management; deployment options for a UN-hub context, with data-residency caveats flagged (not resolved) here.",
+        tools:{python:"Streamlit, Dash", r:"Shiny"},
+        code:{
+python:
+"# app_streamlit/app.py\nimport streamlit as st\nimport pandas as pd\n\nst.set_page_config(page_title=\"Rwanda Regional Hub\", layout=\"wide\")\ndf = pd.read_csv(\"data/processed/track2_dataset.csv\")\n\nprovince = st.sidebar.selectbox(\n    \"Province\", sorted(df[\"province\"].unique())\n)\nfiltered = df[df[\"province\"] == province]\n\nst.title(\"Regional Analytic Hub, Prototype\")\nst.line_chart(filtered, x=\"date\", y=\"value\")\n\n# Run with:\n# streamlit run app_streamlit/app.py",
+r:
+"# app_shiny/app.R\nlibrary(shiny)\nlibrary(ggplot2)\n\ndf <- read.csv(\"data/processed/track2_dataset.csv\")\n\nui <- fluidPage(\n  titlePanel(\"Regional Analytic Hub, Prototype\"),\n  sidebarLayout(\n    sidebarPanel(\n      selectInput(\"province\", \"Province\", sort(unique(df$province)))\n    ),\n    mainPanel(plotOutput(\"trend\"))\n  )\n)\n\nserver <- function(input, output) {\n  output$trend <- renderPlot({\n    ggplot(subset(df, province == input$province), aes(date, value)) +\n      geom_line(color = \"#9C7124\")\n  })\n}\n\nshinyApp(ui, server)\n\n# Run with:\n# shiny::runApp(\"app_shiny\")"
+        },
+        exercise:"Design brief: a one-page wireframe plus architecture sketch for a regional analytic hub, plus a minimal one-filter, one-chart working prototype in the participant's primary language.",
+        assessment:"Design brief / structured worksheet, checklist-graded."
+      },
+      {
+        num:6, title:"AI-Assisted Analytics Pattern", week:"6, plus the Module 6 Extension",
+        overview:"Completes the dashboard into a full multi-filter hub, and introduces the track's signature pattern for using an LLM to help generate analysis code without exposing raw records to it.",
+        objectives:[
+          {level:"Intermediate", bloom:"Apply", text:"Build a working, multi-filter dashboard with at least one chart and one map wired together."},
+          {level:"Advanced", bloom:"Analyze / Create, via the Extension", text:"Integrate an AI-assisted analytics pattern (schema-only code generation, local execution, summary-only narration) with data-minimization safeguards designed in from the start."},
+          {level:"Advanced", bloom:"Analyze / Create", text:"Port a dashboard component's logic between Python and R without loss of correctness."}
+        ],
+        topics:"Multi-filter, multi-widget dashboard composition (chart + map + summary table, cross-filtered). The AI-assisted analytics pattern, in three steps: (1) share only the data schema, column names and types, never raw rows, with an LLM; (2) the LLM generates analysis code, which runs locally against the real data; (3) only aggregate summaries or the code's output are returned to any AI-narration layer, never row-level data. Module 6 Extension: porting a Streamlit/Dash component to Shiny (or the reverse) as a fluency exercise.",
+        tools:{python:"Streamlit/Dash + an LLM API client used strictly in schema-only mode", r:"Shiny equivalent of the same pattern"},
+        code:{
+python:
+"# Step 1: share only the schema, never raw rows\nschema = {c: str(t) for c, t in df.dtypes.items()}\n\nprompt = f\"\"\"\nData frame schema (columns and types only):\n{schema}\nWrite pandas code that returns the top 5\ndistricts by mean 'value'. Return code only,\nno data.\n\"\"\"\ngenerated_code = call_llm(prompt)  # your client\n\n# Step 2: run it locally, against the real data\nlocal_vars = {\"df\": df}\nexec(generated_code, {}, local_vars)\nresult = local_vars[\"result\"]  # aggregate only\n\n# Step 3: only the aggregate result is passed on\nnarration_prompt = (\n    \"Summarize this result in one paragraph: \"\n    f\"{result.to_dict()}\"\n)",
+r:
+"# Step 1: share only the schema, never raw rows\nschema <- sapply(df, class)\n\nprompt <- glue::glue(\n  \"Data frame schema (columns and types only): \",\n  \"{toString(schema)}. Write R code that returns \",\n  \"the top 5 districts by mean 'value'. Return code \",\n  \"only, no data.\"\n)\ngenerated_code <- call_llm(prompt)  # your client\n\n# Step 2: run it locally, against the real data\nresult <- eval(\n  parse(text = generated_code),\n  envir = list(df = df)\n)\n\n# Step 3: only the aggregate result is passed on\nnarration_prompt <- glue::glue(\n  \"Summarize this result in one paragraph: \",\n  \"{toString(result)}\"\n)"
+        },
+        exercise:"Extend the Module 5 prototype into a full dashboard (at least 2 filters, 1 chart, 1 map); add one AI-assisted feature built strictly to the schema-only / local-execution / summary-only pattern; port one component to the other language.",
+        assessment:"Live demo + code review: a 5-minute live dashboard demo graded against a reactivity/design rubric. This is the primary formative line for Analytic Hub & Dashboard Development ahead of its 30-point capstone weight.",
+        rai:"The schema-only / local-execution / summary-only pattern is itself a data-minimization safeguard, named explicitly here so it is a practiced habit before Module 9 formalizes it as a governance requirement."
+      }
+    ]
+  },
+  {
+    id:"d", letter:"D", num:"04", title:"Applied Analytics", weeks:"7",
+    blurb:"Introduces forecasting and interpretable modeling, deliberately weighted toward small-N regional realism and plain-language communication of uncertainty.",
+    color:"var(--ember)", tint:"var(--ember-tint)",
+    modules:[
+      {
+        num:7, title:"Forecasting Regional Time Series", week:"7",
+        overview:"Introduces the track's first predictive-analytics content, kept deliberately simple and interpretable given small-N regional data such as a single district's survey series.",
+        objectives:[
+          {level:"Foundational", bloom:"Understand", text:"Distinguish trend from seasonality in a time series; explain when machine learning is, and is not, appropriate for small-N regional data."},
+          {level:"Intermediate", bloom:"Apply", text:"Produce a forecast with a visible confidence interval."}
+        ],
+        topics:"Decomposition (trend / seasonality / residual); naive and seasonal-naive baselines as a sanity check; simple forecasting methods (exponential smoothing, ARIMA-family, or Prophet); always plotting the confidence interval, never a bare point forecast; the small-N caution: when a regional dataset is too thin for anything beyond a baseline.",
+        tools:{python:"statsmodels, prophet", r:"forecast, prophet"},
+        code:{
+python:
+"import pandas as pd\nfrom prophet import Prophet\n\nts = df.groupby(\"date\", as_index=False)[\"value\"].sum()\nts = ts.rename(columns={\"date\": \"ds\", \"value\": \"y\"})\n\nmodel = Prophet(interval_width=0.90)\nmodel.fit(ts)\n\nfuture = model.make_future_dataframe(periods=12, freq=\"M\")\nforecast = model.predict(future)\n\nmodel.plot(forecast)  # includes the CI band",
+r:
+"library(forecast)\n\nmonthly <- aggregate(value ~ date, df, sum)\nts_data <- ts(monthly$value, frequency = 12)\n\nfit <- ets(ts_data)  # exponential smoothing\nfc <- forecast(fit, h = 12, level = 90)\n\nautoplot(fc) +\n  labs(title = \"Forecast, 90% Confidence Interval\")"
+        },
+        exercise:"Forecast one time series from the Chapter 3 dataset in both languages; the chart must show history, forecast, and confidence interval together.",
+        assessment:"Feeds into the combined Module 7 to 8 forecast and model report (see Module 8).",
+        rai:"A forecast presented without its confidence interval is a governance issue, not a style choice. It misrepresents certainty to a decision-maker who may act on it."
+      },
+      {
+        num:8, title:"Interpretable First Models", week:"7",
+        overview:"Introduces supervised modeling, weighted toward interpretability over raw performance given the audience this program serves.",
+        objectives:[
+          {level:"Intermediate", bloom:"Apply", text:"Train and evaluate a simple, interpretable model with a proper train/test split."},
+          {level:"Advanced", bloom:"Evaluate, begun here and completed at capstone", text:"Communicate a model's or forecast's uncertainty and limitations in plain language for a non-technical decision-maker."}
+        ],
+        topics:"Train/test split and why it matters even for small datasets; interpretable model families (linear/logistic regression, decision trees) chosen deliberately over black-box models; evaluation metrics matched to the question being asked; translating a model's output and its limitations into a one-paragraph, non-technical summary.",
+        tools:{python:"scikit-learn", r:"tidymodels"},
+        code:{
+python:
+"from sklearn.model_selection import train_test_split\nfrom sklearn.linear_model import LogisticRegression\nfrom sklearn.metrics import classification_report\n\nX = df[[\"feature_1\", \"feature_2\"]]\ny = df[\"outcome\"]\nX_train, X_test, y_train, y_test = train_test_split(\n    X, y, test_size=0.25, random_state=42, stratify=y\n)\n\nmodel = LogisticRegression().fit(X_train, y_train)\npreds = model.predict(X_test)\nprint(classification_report(y_test, preds))",
+r:
+"library(tidymodels)\n\nsplit <- initial_split(df, prop = 0.75, strata = outcome)\ntrain <- training(split)\ntest  <- testing(split)\n\nlog_fit <- logistic_reg() |>\n  set_engine(\"glm\") |>\n  fit(outcome ~ feature_1 + feature_2, data = train)\n\npredict(log_fit, test) |>\n  bind_cols(test) |>\n  metrics(truth = outcome, estimate = .pred_class)"
+        },
+        exercise:"Forecast & model report: combine the Module 7 forecast and a Module 8 interpretable model into a short report with a plain-language uncertainty summary for a non-technical reader.",
+        assessment:"Graded report, rubric-checked against the capstone criterion it previews (Track 2 capstone: Analytical rigor of model/forecast, 20 pts)."
+      }
+    ]
+  },
+  {
+    id:"e", letter:"E", num:"05", title:"Responsible AI & Governance", weeks:"8",
+    blurb:"Formalizes the Responsible AI habits practiced since Module 1 into named UN/UNESCO frameworks, a graded Ethical Impact Assessment, and a hands-on fairness audit.",
+    color:"var(--indigo)", tint:"var(--indigo-tint)",
+    modules:[
+      {
+        num:9, title:"UN/UNESCO Responsible AI Frameworks & Ethical Impact Assessment", week:"8",
+        overview:"Formalizes the Responsible AI habits practiced informally since Module 1 into named frameworks and a graded governance artifact.",
+        objectives:[
+          {level:"Foundational", bloom:"Remember/Understand", text:"Name the core principles of the UN Principles on Personal Data Protection and Privacy, the UNESCO Recommendation on the Ethics of Artificial Intelligence, and the OCHA/IASC Data Responsibility Guidelines."},
+          {level:"Intermediate", bloom:"Apply", text:"Complete an Ethical Impact Assessment and a data-governance/licensing note for a real dataset or hub; apply a data-minimization design pattern."}
+        ],
+        topics:"Walkthrough of the three named frameworks and where each applies to a regional analytic hub; the Ethical Impact Assessment template, covering purpose, data sources, minimization measures, consent/provenance, risk of harm, and mitigation; revisiting the Module 4 re-identification risk and the Module 6 schema-only AI pattern as worked examples of minimization already practiced.",
+        tools:{python:"Framework/template-based; no new library.", r:"Framework/template-based; no new library."},
+        exercise:"Ethical Impact Assessment worksheet, applied to the participant's own Unit C dashboard.",
+        assessment:"Scorecard / structured worksheet, checklist-graded. Feeds the Track 2 capstone's Responsible AI documentation criterion (20 pts)."
+      },
+      {
+        num:10, title:"Bias, Fairness & Sustainability Audit", week:"8",
+        overview:"Closes the track's technical content with the Advanced-level Responsible AI descriptor: auditing rather than only documenting.",
+        objectives:[
+          {level:"Advanced", bloom:"Analyze/Evaluate", text:"Run a group-wise fairness/bias audit on a model and draft mitigations."},
+          {level:"Advanced", bloom:"Analyze/Evaluate", text:"Evaluate a pipeline or hub end-to-end for sustainability and accountability risk."}
+        ],
+        topics:"Group-wise fairness metrics (e.g., demographic parity, equalized odds) applied to the Module 8 model, disaggregated by province or urban/rural status; drafting mitigations rather than stopping at detection; a sustainability/accountability checklist for the hub as a whole: maintenance ownership, update cadence, and who is accountable if the hub misleads a decision-maker.",
+        tools:{python:"fairlearn", r:"fairness / fairmodels"},
+        code:{
+python:
+"from fairlearn.metrics import (\n    MetricFrame, demographic_parity_difference\n)\nfrom sklearn.metrics import accuracy_score\n\nsub = df.loc[X_test.index, \"province\"]\npreds = model.predict(X_test)\n\nmf = MetricFrame(\n    metrics=accuracy_score,\n    y_true=y_test, y_pred=preds,\n    sensitive_features=sub\n)\nprint(mf.by_group)\n\ndpd = demographic_parity_difference(\n    y_test, preds, sensitive_features=sub\n)\nprint(\"Demographic parity difference:\", dpd)",
+r:
+"library(fairness)\n\ndp <- dem_parity(\n  data = test_with_preds,\n  outcome = \"outcome\",\n  group = \"province\",\n  probs = \".pred_class\",\n  base = \"reference_province\"\n)\ndp$Metric"
+        },
+        exercise:"Fairness audit report on the Module 8 model, disaggregated by province or urban/rural status, with at least one drafted mitigation.",
+        assessment:"Graded audit report. The second, advanced-level formative touchpoint for the Responsible AI domain, immediately ahead of the capstone."
+      }
+    ]
+  }
+];
+
+var GLANCE = [
+  ["A: Foundations of Visualization","1–2","M1–M2","Visual grammar, static charts in Python & R"],
+  ["B: Interactive & Geospatial Visualization","3–4","M3–M4","Interactive charts, mapping regional data on P-codes"],
+  ["C: Analytic Hubs","5–6","M5–M6 (+Ext.)","Dashboards (Streamlit/Dash, Shiny); AI-assisted analytics pattern"],
+  ["D: Applied Analytics","7","M7–M8","Forecasting; an interpretable first model"],
+  ["E: Responsible AI & Governance","8","M9–M10","UN/UNESCO frameworks; bias & fairness in practice"],
+  ["Capstone","9","n/a","Regional analytic hub with Responsible AI safeguards"]
+];
+
+var PKGS = [
+  ["Core data handling","pandas, numpy","tidyverse (dplyr, readr, tidyr)"],
+  ["Static & interactive visualization","matplotlib, seaborn, plotly","ggplot2, patchwork, plotly"],
+  ["Geospatial mapping","geopandas, folium","sf, leaflet"],
+  ["Dashboards","streamlit, dash","shiny"],
+  ["Forecasting","statsmodels, prophet","forecast, prophet"],
+  ["Modeling","scikit-learn","tidymodels"],
+  ["Fairness auditing","fairlearn","fairness, fairmodels"]
+];
+
+var RUBRIC = [
+  ["Technical build quality & correctness", 30],
+  ["Visualization / UX design quality", 20],
+  ["Analytical rigor of model/forecast", 20],
+  ["Responsible AI documentation", 20],
+  ["Presentation clarity (non-technical audience)", 10]
+];
+
+var ASSESS_MAP = [
+  ["Programming Fluency (Python & R)","Module exercises in both languages, every module (graded scripts)","Code correctness underlies every rubric line"],
+  ["Data Visualization & Communication","Module 1-2 chart critique & peer review","Visualization/UX design quality (20 pts)"],
+  ["Geospatial Analysis","Module 4 map-building exercise + data-quality note","Visualization/UX design quality (20 pts)"],
+  ["Analytic Hub & Dashboard Development","Module 5 design brief; Module 6 live demo","Technical build quality (30 pts)"],
+  ["Applied Analytics: Forecasting & Modeling","Module 7-8 forecast & model report","Analytical rigor (20 pts)"],
+  ["Responsible AI, Ethics & Governance","Module 9 Ethical Impact Assessment; Module 10 fairness audit","Responsible AI documentation (20 pts)"]
+];
+
+var ENV_CODE = {
+python:
+"# 0. Clone the course repo: this site, the ten runnable\n#    notebooks, sample data, and both dashboard apps all live here\ngit clone https://github.com/seknewna/Capacity-Building-and-Sustainability.git\ncd Capacity-Building-and-Sustainability\n\n# 1. Create an isolated environment (once)\npython -m venv track2-env\nsource track2-env/bin/activate\n# Windows: track2-env\\Scripts\\activate\n\n# 2. Install the Track 2 package set\npip install -r environment/requirements.txt\n\n# 3. Launch the notebooks\njupyter lab notebooks/",
+r:
+"# 0. Clone the course repo: this site, the ten runnable\n#    notebooks, sample data, and both dashboard apps all live here\ngit clone https://github.com/seknewna/Capacity-Building-and-Sustainability.git\nsetwd(\"Capacity-Building-and-Sustainability\")\n\n# 1. Create an isolated project library (once)\ninstall.packages(\"renv\")\nrenv::init()\n\n# 2. Install the Track 2 package set\nsource(\"environment/install.R\")\n\n# 3. Snapshot for reproducibility\nrenv::snapshot()"
+};
+
+var FOLDER_TXT =
+"track2-course/                    # this repo: clone once, get everything\n  docs/                          # this site, served by GitHub Pages\n  notebooks/\n    module-01-visual-grammar-chart-selection/\n      python.ipynb\n      r.ipynb\n    module-02-static-charts/ ...  # one folder per module, ten in total\n  apps/\n    streamlit_app.py              # Module 5-6 dashboard, Python\n    shiny_app.R                   # Module 5-6 dashboard, R\n  data/\n    raw/                         # NISR + HDX source files, read-only\n    processed/                   # cleaned, analysis-ready extract\n    make_sample_data.py          # generates the bundled synthetic sample\n  environment/\n    requirements.txt              # pip install -r environment/requirements.txt\n    install.R                     # source(\"environment/install.R\")\n  generate_repo.py                # regenerates every notebook from source";
+
+var DATA_LOAD_CODE = {
+python:
+"import pandas as pd\n\n# Load the NISR extract (EICV, LFS, or census indicators)\ndf = pd.read_csv(\"data/raw/nisr_eicv7_extract.csv\")\n\n# Basic inspection\ndf.info()\ndf.head()\n\n# Clean: standardize column names, drop exact\n# duplicates, coerce the date column, and keep\n# rows with a usable district P-code\ndf = (\n    df.rename(columns=str.lower)\n      .drop_duplicates()\n      .assign(date=lambda d: pd.to_datetime(\n          d[\"date\"], errors=\"coerce\"))\n      .dropna(subset=[\"district_pcode\", \"date\"])\n)\n\ndf.to_csv(\"data/processed/track2_dataset.csv\", index=False)",
+r:
+"library(tidyverse)\n\n# Load the NISR extract (EICV, LFS, or census indicators)\ndf <- read_csv(\"data/raw/nisr_eicv7_extract.csv\")\n\n# Basic inspection\nglimpse(df)\n\n# Clean: standardize column names, drop exact\n# duplicates, coerce the date column, and keep\n# rows with a usable district P-code\ndf <- df |>\n  rename_with(tolower) |>\n  distinct() |>\n  mutate(date = as.Date(date)) |>\n  drop_na(district_pcode, date)\n\nwrite_csv(df, \"data/processed/track2_dataset.csv\")"
+};
+
+var NSO_ROWS = [
+  ["Rwanda","National Institute of Statistics (NISR)","microdata.statistics.gov.rw","The primary source used throughout this site (Chapter 3.1)."],
+  ["Kenya","Kenya National Bureau of Statistics (KNBS)","statistics.knbs.or.ke/nada","Same NADA catalog software as NISR; household, census, and price survey microdata."],
+  ["Uganda","Uganda Bureau of Statistics (UBOS)","ubos.org/microdata","National Panel Survey and census microdata, plus a separate open datasets portal."],
+  ["Nigeria","National Bureau of Statistics (NBS)","microdata.nigerianstat.gov.ng","General Household Survey panel and agricultural survey microdata."],
+  ["Ghana","Ghana Statistical Service (GSS)","microdata.statsghana.gov.gh","Ghana Living Standards Survey (GLSS) and DHS rounds, plus the GSS StatsBank for aggregates."]
+];
+
+var SCRAPE_CODE = {
+python:
+"import time\nimport requests\nfrom bs4 import BeautifulSoup\nimport pandas as pd\n\nHEADERS = {\n    \"User-Agent\": \"track2-coursework/1.0 (contact: you@example.org)\"\n}\n\ndef fetch(url):\n    resp = requests.get(url, headers=HEADERS, timeout=15)\n    resp.raise_for_status()\n    time.sleep(1)  # be polite: one request per second\n    return resp.text\n\nhtml = fetch(\"https://example-nso.gov/statistics/indicator-table\")\n\n# Quickest path for a clean HTML <table>:\ndf = pd.read_html(html)[0]\n\n# Or walk the DOM by hand when the table needs cleanup:\nsoup = BeautifulSoup(html, \"html.parser\")\nrows = []\nfor tr in soup.select(\"table.indicator-table tr\")[1:]:\n    cells = [td.get_text(strip=True) for td in tr.select(\"td\")]\n    rows.append(cells)\ndf = pd.DataFrame(rows, columns=[\"district\", \"indicator\", \"value\"])\n\ndf.to_csv(\"data/raw/scraped_indicator.csv\", index=False)",
+r:
+"library(rvest)\nlibrary(polite)   # respects robots.txt & rate-limits for you\nlibrary(readr)\n\nsession <- bow(\n  \"https://example-nso.gov/statistics/indicator-table\",\n  user_agent = \"track2-coursework (contact: you@example.org)\"\n)\n\npage <- scrape(session)\n\n# Quickest path for a clean HTML <table>:\ndf <- page |>\n  html_element(\"table.indicator-table\") |>\n  html_table()\n\nwrite_csv(df, \"data/raw/scraped_indicator.csv\")"
+};
+
+/* ============================================================
+   RENDER HELPERS
+   ============================================================ */
+function esc(s){
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+var KW = {
+  python:["import","from","as","def","return","if","else","elif","for","in","while","with","class","try","except","lambda","None","True","False","not","and","or"],
+  r:["library","function","return","if","else","for","in","while","TRUE","FALSE","NULL","NA"]
+};
+function highlight(code, lang){
+  var e = esc(code);
+  var kw = KW[lang].join("|");
+  var re = new RegExp("(#[^\\n]*)|(\"(?:[^\"\\\\]|\\\\.)*\"|'(?:[^'\\\\]|\\\\.)*')|\\b(" + kw + ")\\b", "g");
+  return e.replace(re, function(m, comment, str, k){
+    if(comment) return '<span class="tok-c">'+comment+'</span>';
+    if(str) return '<span class="tok-s">'+str+'</span>';
+    if(k) return '<span class="tok-k">'+k+'</span>';
+    return m;
+  });
+}
+var codeBlockCounter = 0;
+function codeBlockHTML(codeObj, label){
+  codeBlockCounter++;
+  var gid = "cb" + codeBlockCounter;
+  return ''+
+  '<div class="codeblock">'+
+    '<div class="codeblock-head" role="tablist">'+
+      '<button class="tab-btn py" role="tab" aria-selected="true" data-target="'+gid+'-py"><span class="chip"></span>Python</button>'+
+      '<button class="tab-btn r" role="tab" aria-selected="false" data-target="'+gid+'-r"><span class="chip"></span>R</button>'+
+      (label ? '<span class="codeblock-label">'+esc(label)+'</span>' : '')+
+    '</div>'+
+    '<div class="codepanel active" id="'+gid+'-py"><pre><code>'+highlight(codeObj.python,"python")+'</code></pre></div>'+
+    '<div class="codepanel" id="'+gid+'-r"><pre><code>'+highlight(codeObj.r,"r")+'</code></pre></div>'+
+  '</div>';
+}
+function objLevelClass(level){
+  return level.split(" ")[0].toLowerCase();
+}
+
+/* ---- Chapter 1.3 glance table ---- */
+document.getElementById("glanceTable").innerHTML = GLANCE.map(function(r){
+  return "<tr><td>"+r[0]+"</td><td>"+r[1]+"</td><td>"+r[2]+"</td><td>"+r[3]+"</td></tr>";
+}).join("");
+
+/* ---- Chapter 2 ---- */
+document.getElementById("envSetupCode").innerHTML = codeBlockHTML(ENV_CODE, "one-time setup");
+document.getElementById("folderCode").innerHTML =
+  '<div class="codeblock"><div class="codepanel active" style="padding:.9rem 1.05rem;"><pre><code>'+esc(FOLDER_TXT)+'</code></pre></div></div>';
+document.getElementById("pkgTable").innerHTML = PKGS.map(function(r){
+  return "<tr><td>"+r[0]+"</td><td>"+r[1]+"</td><td>"+r[2]+"</td></tr>";
+}).join("");
+
+/* ---- Chapter 3.3 ---- */
+document.getElementById("dataLoadCode").innerHTML = codeBlockHTML(DATA_LOAD_CODE, "run once, in Module 1");
+
+/* ---- Chapter 3.4 / 3.8 ---- */
+document.getElementById("nsoTable").innerHTML = NSO_ROWS.map(function(r){
+  return "<tr><td>"+r[0]+"</td><td>"+r[1]+"</td><td><code>"+r[2]+"</code></td><td>"+r[3]+"</td></tr>";
+}).join("");
+document.getElementById("scrapeCode").innerHTML = codeBlockHTML(SCRAPE_CODE, "last resort, not first choice");
+
+/* ---- Chapter 4: curriculum ---- */
+(function(){
+  var root = document.getElementById("curriculumRoot");
+  var html = "";
+  UNITS.forEach(function(u){
+    html += '<div class="unit-block" id="unit-'+u.id+'" style="--unit-color:'+u.color+'; --unit-tint:'+u.tint+';">';
+    html += '<div class="unit-head"><span class="unit-num">'+u.num+'</span><div><h3>Unit '+u.letter+': '+u.title+'</h3><p>'+u.blurb+'</p><span class="unit-weeks">Weeks '+u.weeks+'</span></div></div>';
+    u.modules.forEach(function(m){
+      html += '<article class="module" id="m'+m.num+'">';
+      html += '<div class="module-head"><h4>Module '+m.num+': '+m.title+'</h4><span class="module-week">Week '+m.week+'</span></div>';
+      html += '<p class="module-overview">'+m.overview+'</p>';
+
+      html += '<h5>Learning objectives</h5><ul class="obj-list">';
+      m.objectives.forEach(function(o){
+        html += '<li><span class="obj-level">'+o.level+'</span> <span class="obj-bloom">('+o.bloom+')</span>: '+o.text+'</li>';
+      });
+      html += '</ul>';
+
+      html += '<h5>Core topics</h5><p class="topics-text">'+m.topics+'</p>';
+
+      html += '<h5>Tools</h5><div class="toolrow">'+
+        '<span class="toolpill py"><span class="chip"></span>'+m.tools.python+'</span>'+
+        '<span class="toolpill r"><span class="chip"></span>'+m.tools.r+'</span>'+
+      '</div>';
+
+      if(m.code){
+        html += '<h5>Code example</h5>' + codeBlockHTML(m.code);
+      }
+
+      html += '<h5>Run it</h5>' + notebookLinksHTML(m.num);
+
+      html += '<h5>Hands-on exercise</h5><p class="topics-text">'+m.exercise+'</p>';
+      html += '<h5>Formative assessment</h5><p class="topics-text">'+m.assessment+'</p>';
+      if(m.peer){ html += '<h5>Peer review</h5><p class="topics-text">'+m.peer+'</p>'; }
+      if(m.rai){ html += '<div class="kv rai"><b>Responsible AI callback.</b> '+m.rai+'</div>'; }
+      html += '</article>';
+    });
+    html += '</div>';
+  });
+  root.innerHTML = html;
+})();
+
+/* ---- Chapter 5: rubric bars ---- */
+document.getElementById("rubricBars").innerHTML = RUBRIC.map(function(r){
+  return '<div class="rubric-row"><span class="rlabel">'+r[0]+'</span>'+
+    '<span class="rubric-track"><span class="rubric-fill" style="width:'+(r[1])+'%"></span></span>'+
+    '<span class="rpts">'+r[1]+'</span></div>';
+}).join("");
+
+/* ============================================================
+   TRACK 1 CONTENT DATA
+   ============================================================ */
+var GLANCE_T1 = [
+  ["A: Foundations of Data Integration","1\u20132","M1\u2013M2","Why integrate; extracting from files, databases, and APIs"],
+  ["B: Data Standards for Interoperability","3\u20134","M3\u2013M4","HXL, P-codes/CODs, IATI, SDMX; applying standards to harmonize data"],
+  ["C: Metadata & Documentation","5\u20136","M5\u2013M6","Metadata fundamentals; data dictionaries and catalogs"],
+  ["D: Data Quality Management","7\u20138","M7\u2013M8","UN NQAF dimensions; automated validation and profiling"],
+  ["E: Pipelines & Governance","9","M9\u2013M10","Reproducible pipelines; licensing, sustainability, data responsibility"],
+  ["Capstone","10","n/a","End-to-end regional data integration pipeline"]
+];
+
+var PKGS_T1 = [
+  ["Core data handling","pandas, numpy","tidyverse (dplyr, readr, tidyr)"],
+  ["Database & API connectivity","sqlite3, SQLAlchemy, requests","DBI, RSQLite/odbc, httr2"],
+  ["Standards & harmonization","pandas (HXL/P-code join utilities)","tidyverse (join + string utilities)"],
+  ["Validation & profiling","pandera, ydata-profiling","pointblank, skimr / DataExplorer"],
+  ["Serving data (optional extension)","fastapi, uvicorn","plumber"]
+];
+
+var RUBRIC_T1 = [
+  ["Technical pipeline correctness (runs end-to-end, reproducible)", 30],
+  ["Correct application of standards (HXL, P-codes, ISO formats)", 20],
+  ["Metadata and documentation completeness", 20],
+  ["Quality validation rigor and handling of failures", 20],
+  ["Governance note quality and completeness", 10]
+];
+
+var ASSESS_MAP_T1 = [
+  ["A: Foundations of Data Integration","Module 1-2 hands-on extraction and merge exercises","Technical pipeline correctness (30 pts)"],
+  ["B: Data Standards for Interoperability","Module 3-4 standards-matching quiz and harmonized-dataset submission","Correct application of standards (20 pts)"],
+  ["C: Metadata & Documentation","Module 5-6 metadata record and data dictionary submissions","Metadata and documentation completeness (20 pts)"],
+  ["D: Data Quality Management","Module 7-8 quality scorecard and validation script submissions","Quality validation rigor (20 pts)"],
+  ["E: Pipelines & Governance","Module 9 live pipeline run; Module 10 governance note","Governance note quality (10 pts) + pipeline correctness"]
+];
+
+var ENV_CODE_T1 = {
+python:
+"# 0. Clone the course repo: both tracks' sites and notebooks\n#    live in this same repository\ngit clone https://github.com/seknewna/Capacity-Building-and-Sustainability.git\ncd Capacity-Building-and-Sustainability\n\n# 1. Create an isolated environment (once, shared with Track 2)\npython -m venv track2-env\nsource track2-env/bin/activate\n# Windows: track2-env\\Scripts\\activate\n\n# 2. Install the full package set (both tracks)\npip install -r environment/requirements.txt\npip install pandera fastapi uvicorn\n\n# 3. Generate this track's raw practice sources\npython3 data/make_track1_sources.py\n\n# 4. Launch the notebooks\njupyter lab notebooks/track1/",
+r:
+"# 0. Clone the course repo: both tracks' sites and notebooks\n#    live in this same repository\ngit clone https://github.com/seknewna/Capacity-Building-and-Sustainability.git\nsetwd(\"Capacity-Building-and-Sustainability\")\n\n# 1. Create an isolated project library (once, shared with Track 2)\ninstall.packages(\"renv\")\nrenv::init()\n\n# 2. Install the full package set (both tracks)\nsource(\"environment/install.R\")\ninstall.packages(c(\"pointblank\", \"plumber\"))\n\n# 3. Generate this track's raw practice sources\nsystem(\"python3 data/make_track1_sources.py\")"
+};
+
+var FOLDER_TXT_T1 =
+"track2-course/                    # this repo: clone once, get both tracks\n  docs/\n    index.html                    # this site (Track 1 + Track 2 switcher)\n  notebooks/\n    track1/\n      module-01-principles-data-integration/\n        python.ipynb\n        r.ipynb\n      module-02-connecting-extracting-sources/ ...  # ten modules in total\n    module-01-visual-grammar-chart-selection/  ...  # Track 2's ten modules\n  data/\n    raw/\n      partner_a_finance_export.csv  # Track 1's raw practice sources\n      partner_b_survey_export.csv\n      partner_c_hdx_pull.csv\n      cod_ab_gazetteer.csv\n    processed/\n      track2_dataset.csv            # Track 1's Module 9 publishes this exactly\n    make_track1_sources.py\n    make_sample_data.py             # Track 2's own quick-start shortcut\n  environment/\n    requirements.txt\n    install.R";
+
+var DATA_LOAD_CODE_T1 = {
+python:
+"import pandas as pd\n\n# Ingest a raw partner export\ndf = pd.read_csv(\"data/raw/partner_a_finance_export.csv\")\n\n# Basic inspection\ndf.info()\ndf.head()\n\n# Clean: standardize column names, drop exact\n# duplicates, coerce the date column\ndf = (\n    df.rename(columns=str.lower)\n      .drop_duplicates()\n      .assign(date=lambda d: pd.to_datetime(\n          d[\"date\"], format=\"%d/%m/%Y\", errors=\"coerce\"))\n)\n\ndf.to_csv(\"data/processed/partner_a_clean.csv\", index=False)",
+r:
+"library(tidyverse)\n\n# Ingest a raw partner export\ndf <- read_csv(\"data/raw/partner_a_finance_export.csv\")\n\n# Basic inspection\nglimpse(df)\n\n# Clean: standardize column names, drop exact\n# duplicates, coerce the date column\ndf <- df |>\n  rename_with(tolower) |>\n  distinct() |>\n  mutate(date = as.Date(date, format = \"%d/%m/%Y\"))\n\nwrite_csv(df, \"data/processed/partner_a_clean.csv\")"
+};
+
+document.getElementById("glanceTableT1").innerHTML = GLANCE_T1.map(function(r){
+  return "<tr><td>"+r[0]+"</td><td>"+r[1]+"</td><td>"+r[2]+"</td><td>"+r[3]+"</td></tr>";
+}).join("");
+document.getElementById("envSetupCodeT1").innerHTML = codeBlockHTML(ENV_CODE_T1, "one-time setup");
+document.getElementById("folderCodeT1").innerHTML =
+  '<div class="codeblock"><div class="codepanel active" style="padding:.9rem 1.05rem;"><pre><code>'+esc(FOLDER_TXT_T1)+'</code></pre></div></div>';
+document.getElementById("pkgTableT1").innerHTML = PKGS_T1.map(function(r){
+  return "<tr><td>"+r[0]+"</td><td>"+r[1]+"</td><td>"+r[2]+"</td></tr>";
+}).join("");
+document.getElementById("dataLoadCodeT1").innerHTML = codeBlockHTML(DATA_LOAD_CODE_T1, "the Module 1-2 pattern");
+document.getElementById("rubricBarsT1").innerHTML = RUBRIC_T1.map(function(r){
+  return '<div class="rubric-row"><span class="rlabel">'+r[0]+'</span>'+
+    '<span class="rubric-track"><span class="rubric-fill" style="width:'+(r[1])+'%"></span></span>'+
+    '<span class="rpts">'+r[1]+'</span></div>';
+}).join("");
+document.getElementById("mapTableT1").innerHTML = ASSESS_MAP_T1.map(function(r){
+  return "<tr><td>"+r[0]+"</td><td>"+r[1]+"</td><td>"+r[2]+"</td></tr>";
+}).join("");
+
+/* ---- Track 1 curriculum (Chapter 4) ---- */
+var UNITS_T1 = [
+  { id:"a", letter:"A", num:"01", title:"Foundations of Data Integration", weeks:"1\u20132",
+    blurb:"Why regional hubs integrate data at all, and the first working extraction and connectivity code.",
+    color:"var(--accent)", tint:"var(--accent-tint)",
+    modules:[
+      { num:1, title:"Principles of Data Integration & the Regional Data Landscape", week:"1",
+        overview:"Before touching a connector or a merge, this module frames why regional hubs need to integrate data from multiple systems at all, and the vocabulary used for the rest of the track.",
+        objectives:[
+          "Explain why regional hubs need to integrate data from multiple systems.",
+          "Distinguish ETL from ELT and batch from API-based integration.",
+          "Map the source systems a typical regional hub relies on, and recognize the risk of parallel, unreconciled copies of the same data."
+        ],
+        lesson:"What data integration is; ETL vs. ELT; batch vs. API-based integration; the \u201csingle source of truth\u201d problem; a mapping exercise across a typical regional hub's source-system landscape.",
+        tools:{python:"pandas", r:"tidyverse"},
+        code:{
+python:"import pandas as pd\n\npartner_a = pd.DataFrame({\"reg\": [\"Gasabo\", \"Huye\"], \"rev\": [41.2, 38.9]})\npartner_b = pd.DataFrame({\"region_name\": [\"Musanze\", \"Rubavu\"], \"rev\": [44.1, 36.7]})\n\nrename_map = {\"reg\": \"region\", \"region_name\": \"region\"}\nframes = []\nfor name, part in [(\"PartnerA\", partner_a), (\"PartnerB\", partner_b)]:\n    part = part.rename(columns=rename_map)\n    part[\"source_file\"] = name          # provenance: keep track of where every row came from\n    frames.append(part)\n\ncombined = pd.concat(frames, ignore_index=True)",
+r:"library(tidyverse)\n\npartner_a <- tibble(reg = c(\"Gasabo\", \"Huye\"), rev = c(41.2, 38.9))\npartner_b <- tibble(region_name = c(\"Musanze\", \"Rubavu\"), rev = c(44.1, 36.7))\n\ncombined <- bind_rows(\n  PartnerA = partner_a %>% rename(region = reg),\n  PartnerB = partner_b %>% rename(region = region_name),\n  .id = \"source_file\"          # provenance: keep track of where every row came from\n)"
+        },
+        exercise:"Combine two provided partner exports with inconsistent column names into one dataframe, preserving a source_file provenance column, in both Python and R.",
+        assessment:"Short quiz (ETL vs. ELT, batch vs. API scenarios) plus the submitted merged dataframe. Rubric checks no rows were silently dropped and provenance is preserved."
+      },
+      { num:2, title:"Connecting to and Extracting Data from Multiple Sources", week:"2",
+        overview:"Introduces this track's real, three-source practice dataset via SQL-style and REST/HDX-style extraction, and closes with the reverse pattern: publishing a hub's own dataset as a small API.",
+        objectives:[
+          "Query a relational database with SQL from Python and R.",
+          "Parse a REST/JSON-shaped extract the way an HDX or HAPI pull would arrive.",
+          "Handle extraction failure gracefully instead of letting a script fail silently."
+        ],
+        lesson:"SQL basics for extraction; calling REST APIs and pulling CODs from HDX; handling failure gracefully (timeouts, rate limits, expired credentials). Module 2 Extension: serving the hub's own integrated dataset as a small API with FastAPI or plumber, completing the loop with Module 9's publish step.",
+        tools:{python:"sqlite3, requests", r:"DBI, RSQLite, httr2"},
+        code:{
+python:"import sqlite3\nimport pandas as pd\n\npartner_a = pd.read_csv(\"data/raw/partner_a_finance_export.csv\")\nconn = sqlite3.connect(\":memory:\")\npartner_a.to_sql(\"finance_export\", conn, index=False)\n\ndb_df = pd.read_sql(\n    \"SELECT reg, rev, date FROM finance_export WHERE rev >= ?\",\n    conn, params=[30.0],\n)\nconn.close()",
+r:"library(DBI)\nlibrary(RSQLite)\n\npartner_a <- read_csv(\"data/raw/partner_a_finance_export.csv\")\ncon <- dbConnect(SQLite(), \":memory:\")\ndbWriteTable(con, \"finance_export\", partner_a)\n\ndb_df <- dbGetQuery(con,\n  \"SELECT reg, rev, date FROM finance_export WHERE rev >= ?\",\n  params = list(30.0))\ndbDisconnect(con)"
+        },
+        exercise:"Extract the finance export via a SQL query and the HDX-style pull via a file-based simulation, in both Python and R, and confirm the failure-handling branch logs rather than crashes.",
+        assessment:"Submitted script plus resulting extracted tables, graded on correct filtering and on graceful (not silent) handling of a simulated timeout.",
+        governance:"The discussion prompt for the API extension: what access control would this API need before it could be exposed outside the hub's internal network, and which Module 10 governance practices apply just as much to an API endpoint as to a shared CSV file?"
+      }
+    ]
+  },
+  { id:"b", letter:"B", num:"02", title:"Data Standards for Interoperability", weeks:"3\u20134",
+    blurb:"HXL, P-codes/CODs, IATI, and SDMX, then applying them to harmonize real multi-source data.",
+    color:"var(--blue)", tint:"var(--blue-tint)",
+    modules:[
+      { num:3, title:"Core Data Standards Used Across the UN System", week:"3",
+        overview:"A conceptual module: which standard applies to a given regional data type, and a working-level fluency in HXL, P-codes/CODs, IATI, and SDMX before Module 4 applies them.",
+        objectives:[
+          "Identify which standard applies to a given regional data type: geographic, humanitarian needs, aid flows, or official statistics.",
+          "Explain HXL, P-codes/CODs, IATI, and SDMX at a working level."
+        ],
+        lesson:"HXL (Humanitarian Exchange Language) hashtag tagging; P-codes and Common Operational Datasets (CODs); IATI for aid-flow data; SDMX for official statistics; baseline ISO 3166 and ISO 8601.",
+        tools:{python:"None yet. Conceptual module, worked in the next module's harmonization code.", r:"None yet. Conceptual module, worked in the next module's harmonization code."},
+        exercise:"For five provided regional datasets, identify which standard(s) apply and why.",
+        assessment:"Standards-matching quiz plus a short written justification per dataset, graded on correct standard identification and reasoning."
+      },
+      { num:4, title:"Applying Standards in Practice — Harmonizing Multi-Source Regional Data", week:"4",
+        overview:"The first module where all three of this track's raw sources meet: joined on P-codes rather than names, dates normalized to ISO 8601, and a HXL tag row added to the published intermediate file.",
+        objectives:[
+          "Add HXL hashtags to a raw dataset.",
+          "Join disparate regional datasets using P-codes instead of place names.",
+          "Normalize dates and validate join coverage rather than silently dropping unmatched rows."
+        ],
+        lesson:"Adding a HXL hashtag row programmatically; joining on P-codes via the gazetteer instead of name-matching; normalizing dates to ISO 8601 before any merge; validating coverage before and after correction, so unmatched rows are flagged and fixed, never silently dropped.",
+        tools:{python:"pandas", r:"tidyverse"},
+        code:{
+python:"gaz = pd.read_csv(\"data/raw/cod_ab_gazetteer.csv\")\na = pd.read_csv(\"data/raw/partner_a_finance_export.csv\")\n\nunmatched = a[~a[\"reg\"].isin(gaz[\"district_name\"])]\nprint(f\"{len(unmatched)} row(s) unmatched before correction\")\n\nALIASES = {\"Nyarugenge Dist.\": \"Nyarugenge\", \"Rwamagana \": \"Rwamagana\"}\na[\"reg\"] = a[\"reg\"].str.strip().replace(ALIASES)\na[\"date\"] = pd.to_datetime(a[\"date\"], format=\"%d/%m/%Y\")\na = a.merge(gaz, left_on=\"reg\", right_on=\"district_name\", how=\"left\")",
+r:"gaz <- read_csv(\"data/raw/cod_ab_gazetteer.csv\")\na <- read_csv(\"data/raw/partner_a_finance_export.csv\")\n\nunmatched <- a %>% filter(!reg %in% gaz$district_name)\ncat(nrow(unmatched), \"row(s) unmatched before correction\\n\")\n\nALIASES <- c(\"Nyarugenge Dist.\" = \"Nyarugenge\", \"Rwamagana \" = \"Rwamagana\")\na <- a %>%\n  mutate(reg = recode(str_trim(reg), !!!ALIASES),\n         date = as.Date(date, format = \"%d/%m/%Y\")) %>%\n  left_join(gaz, by = c(\"reg\" = \"district_name\"))"
+        },
+        exercise:"Confirm both misspelled rows are caught by the before/after unmatched-row check, then extend the harmonization to bring in Partner C's columns, joined on district_pcode and date.",
+        assessment:"Submitted harmonized, HXL-tagged CSV, graded on join correctness (unmatched rows flagged, not dropped), correct hashtags, and ISO-format dates."
+      }
+    ]
+  },
+  { id:"c", letter:"C", num:"03", title:"Metadata & Data Documentation", weeks:"5\u20136",
+    blurb:"Why documentation matters, then generating a data dictionary and catalog entry programmatically.",
+    color:"var(--gold)", tint:"var(--gold-tint)",
+    modules:[
+      { num:5, title:"Metadata Fundamentals — Why Document Data", week:"5",
+        overview:"A conceptual module: the three types of metadata, what goes wrong without it, and the core standards used to structure it.",
+        objectives:[
+          "Define metadata and its three types.",
+          "Explain the risks an undocumented regional dataset creates.",
+          "Describe Dublin Core, DDI, and DCAT."
+        ],
+        lesson:"Descriptive, structural, and administrative metadata; what goes wrong without it; Dublin Core's 15 elements; DDI for survey microdata; DCAT (what HDX itself runs on); HXL's own #meta hashtag as the lightest-weight option.",
+        tools:{python:"None yet. Conceptual module.", r:"None yet. Conceptual module."},
+        exercise:"Given an undocumented CSV, write a metadata record covering the Dublin Core core elements plus source, collection method, and update frequency.",
+        assessment:"Submitted metadata record, peer-reviewed against a completeness checklist."
+      },
+      { num:6, title:"Building Metadata Catalogs & Data Dictionaries", week:"6",
+        overview:"Turns Module 5's concepts into code: an auto-generated data dictionary as a fast starting point, and a lightweight hub-wide catalog entry.",
+        objectives:[
+          "Generate a data dictionary programmatically from a dataframe.",
+          "Structure a lightweight dataset catalog for a regional hub.",
+          "Read HDX's own dataset metadata fields as a worked real-world example."
+        ],
+        lesson:"Auto-generating a data dictionary (column, dtype, % missing, n unique, a description placeholder); structuring a simple hub-wide catalog; HDX's own DCAT-aligned metadata fields as a worked reference.",
+        tools:{python:"pandas", r:"tidyverse"},
+        code:{
+python:"def build_data_dictionary(df):\n    return pd.DataFrame({\n        \"column\": df.columns,\n        \"dtype\": [str(t) for t in df.dtypes],\n        \"pct_missing\": [round(df[c].isna().mean() * 100, 1) for c in df.columns],\n        \"n_unique\": [df[c].nunique() for c in df.columns],\n        \"description\": [\"\" for _ in df.columns],   # filled in by hand after review\n    })\n\ndictionary = build_data_dictionary(harmonized)\ndictionary.to_csv(\"harmonized_regional_data_DICTIONARY.csv\", index=False)",
+r:"build_data_dictionary <- function(df) {\n  tibble(\n    column = names(df),\n    dtype = map_chr(df, ~ class(.x)[1]),\n    pct_missing = map_dbl(df, ~ round(mean(is.na(.x)) * 100, 1)),\n    n_unique = map_int(df, ~ n_distinct(.x)),\n    description = \"\"            # filled in by hand after review\n  )\n}\n\ndictionary <- build_data_dictionary(harmonized)\nwrite_csv(dictionary, \"harmonized_regional_data_DICTIONARY.csv\")"
+        },
+        exercise:"Auto-generate a data dictionary for the Module 4 harmonized dataset, complete the description column by hand, and add a catalog entry to a running hub catalog.",
+        assessment:"Submitted data dictionary plus catalog entry, graded on completeness of fields and accuracy of the hand-written descriptions."
+      }
+    ]
+  },
+  { id:"d", letter:"D", num:"04", title:"Data Quality Management", weeks:"7\u20138",
+    blurb:"The UN NQAF quality dimensions, then codifying them as automated, re-runnable validation rules.",
+    color:"var(--ember)", tint:"var(--ember-tint)",
+    modules:[
+      { num:7, title:"Data Quality Frameworks & Dimensions", week:"7",
+        overview:"A conceptual module built around the UN National Quality Assurance Framework (NQAF): naming and applying its core dimensions to assess a real regional dataset.",
+        objectives:[
+          "Name and define the core data-quality dimensions used in the UN NQAF.",
+          "Apply the framework to assess a real regional dataset."
+        ],
+        lesson:"Accuracy & reliability; timeliness & punctuality; accessibility & clarity; coherence & comparability; relevance; completeness. Data quality and data responsibility as linked, not separate, concerns.",
+        tools:{python:"None yet. Conceptual module.", r:"None yet. Conceptual module."},
+        exercise:"Score a provided messy regional dataset against each NQAF dimension on a 1-5 scale, with a one-line justification per dimension.",
+        assessment:"Submitted quality scorecard, graded on realistic, defensible scoring (not uniformly high or low) and specific justifications."
+      },
+      { num:8, title:"Automated Data Validation & Profiling in Python and R", week:"8",
+        overview:"Codifies Module 7's quality dimensions as re-runnable rules with pandera, so every pipeline refresh is checked the same way automatically.",
+        objectives:[
+          "Write automated, re-runnable validation rules: schema, ranges, and referential integrity against a P-code gazetteer.",
+          "Handle failures by flagging rows for review, never silently dropping them."
+        ],
+        lesson:"Why codify validation; pandera in Python for declarative schema/range/uniqueness checks; pointblank in R for the equivalent with a human-readable report; automated profiling as a fast first pass; handling failures responsibly.",
+        tools:{python:"pandera", r:"pointblank"},
+        code:{
+python:"import pandera.pandas as pa\nfrom pandera.pandas import Column, Check\n\nschema = pa.DataFrameSchema({\n    \"district_pcode\": Column(str, Check.isin(gazetteer_codes), nullable=False),\n    \"value\": Column(float, Check.ge(0)),\n    \"date\": Column(str, Check.str_matches(r\"^\\d{4}-\\d{2}-\\d{2}$\")),\n})\n\ntry:\n    schema.validate(df, lazy=True)\n    print(\"All validation checks passed.\")\nexcept pa.errors.SchemaErrors as err:\n    err.failure_cases.to_csv(\"validation_failures.csv\", index=False)  # flagged, not dropped",
+r:"library(pointblank)\n\nagent <- create_agent(df) %>%\n  col_vals_in_set(district_pcode, set = gazetteer_codes) %>%\n  col_vals_gte(value, 0) %>%\n  col_vals_regex(date, regex = \"^\\\\d{4}-\\\\d{2}-\\\\d{2}$\") %>%\n  interrogate()\n\nget_agent_report(agent)                 # human-readable pass/fail report\nwrite_csv(get_data_extracts(agent, 1), \"validation_failures.csv\")  # flagged, not dropped"
+        },
+        exercise:"Write a validation schema for the Module 4 harmonized dataset covering at least: no missing/unmatched P-codes, value \u2265 0, and ISO-format dates.",
+        assessment:"Submitted validation script plus before/after row counts, graded on rule coverage and correct handling of failures (flagged and resolved, not silently dropped)."
+      }
+    ]
+  },
+  { id:"e", letter:"E", num:"05", title:"Pipelines & Governance", weeks:"9",
+    blurb:"Assembling every prior module into one reproducible pipeline, and the governance note that hands off to Track 2.",
+    color:"var(--indigo)", tint:"var(--indigo-tint)",
+    modules:[
+      { num:9, title:"Designing a Reproducible Data Integration Pipeline", week:"9 (part 1)",
+        overview:"Assembles ingest, standardize, validate, document, and publish into one reproducible pipeline. Its published output is data/processed/track2_dataset.csv, the exact file Track 2 reads.",
+        objectives:[
+          "Assemble ingest, standardize, validate, document, and publish steps into one reproducible, re-runnable pipeline.",
+          "Apply basic version control to pipeline outputs via dated filenames and a run log."
+        ],
+        lesson:"Why \u201cclick-ops\u201d data preparation breaks down at scale or on handover; mapping pipeline stages to the modules already completed; lightweight orchestration appropriate to a regional hub's scale; basic data versioning.",
+        tools:{python:"pandas, pandera", r:"tidyverse"},
+        code:{
+python:"run_log = []\n\ndef step(name, fn):\n    try:\n        result = fn()\n        run_log.append({\"step\": name, \"status\": \"OK\"})\n        return result\n    except Exception as e:\n        run_log.append({\"step\": name, \"status\": f\"FAILED: {e}\"})\n        raise\n\nsources = step(\"ingest\", ingest)\npublished = step(\"standardize\", lambda: standardize(sources))\nstep(\"validate\", lambda: validate(published))\nstep(\"document\", lambda: document(published))\nstep(\"publish\", lambda: publish(published))  # writes data/processed/track2_dataset.csv directly",
+r:"run_log <- list()\n\nrun_step <- function(name, fn) {\n  result <- tryCatch({\n    r <- fn(); run_log[[name]] <<- \"OK\"; r\n  }, error = function(e) {\n    run_log[[name]] <<- paste(\"FAILED:\", conditionMessage(e)); stop(e)\n  })\n  result\n}\n\nsources <- run_step(\"ingest\", ingest)\npublished <- run_step(\"standardize\", ~ standardize(sources))\nrun_step(\"validate\", ~ validate(published))\nrun_step(\"document\", ~ document(published))\nwrite_csv(published, \"data/processed/track2_dataset.csv\")"
+        },
+        exercise:"Run this pipeline end-to-end on a fresh clone, confirm the run log shows every stage OK, and diff the published track2_dataset.csv against the copy produced by data/make_sample_data.py, they should match exactly.",
+        assessment:"Pipeline runs successfully end-to-end on a held-out test dataset (graded live); run log correctly captures pass/fail of each stage."
+      },
+      { num:10, title:"Data Governance, Responsibility & Sustainability of Integration Pipelines", week:"9 (part 2)",
+        overview:"Closes the track with the governance note that becomes a direct input to Track 2 Module 9's Ethical Impact Assessment.",
+        objectives:[
+          "Draft a data-sharing and licensing note for an integrated dataset.",
+          "Identify sustainability risks in a pipeline.",
+          "Connect integration-stage governance to the Responsible AI practices covered in Track 2."
+        ],
+        lesson:"Data-sharing agreements and licensing; applying the UN Principles on Personal Data Protection and Privacy and the OCHA/IASC Data Responsibility Guidelines at the integration stage; sustainability and maintenance (credentials referenced not exposed, monitoring for schema drift, a data-retirement plan).",
+        tools:{python:"None yet. Documentation module.", r:"None yet. Documentation module."},
+        exercise:"Complete a pipeline governance note for the Module 9 pipeline: data sources and their licenses, sensitive fields present, accountable owner, credential location (referenced, not exposed), and a review date.",
+        assessment:"Submitted governance note, reviewed for completeness.",
+        governance:"This note becomes a direct input to the Track 2 Module 9 Ethical Impact Assessment for any hub built downstream from this pipeline."
+      }
+    ]
+  }
+];
+
+(function(){
+  var root = document.getElementById("curriculumRootT1");
+  var html = "";
+  UNITS_T1.forEach(function(u){
+    html += '<div class="unit-block" id="t1-unit-'+u.id+'" style="--unit-color:'+u.color+'; --unit-tint:'+u.tint+';">';
+    html += '<div class="unit-head"><span class="unit-num">'+u.num+'</span><div><h3>Unit '+u.letter+': '+u.title+'</h3><p>'+u.blurb+'</p><span class="unit-weeks">Weeks '+u.weeks+'</span></div></div>';
+    u.modules.forEach(function(m){
+      html += '<article class="module" id="t1-m'+m.num+'">';
+      html += '<div class="module-head"><h4>Module '+m.num+': '+m.title+'</h4><span class="module-week">Week '+m.week+'</span></div>';
+      html += '<p class="module-overview">'+m.overview+'</p>';
+
+      html += '<h5>Learning objectives</h5><ul class="plain">';
+      m.objectives.forEach(function(o){ html += '<li>'+o+'</li>'; });
+      html += '</ul>';
+
+      html += '<h5>Lesson content</h5><p class="topics-text">'+m.lesson+'</p>';
+
+      html += '<h5>Tools</h5><div class="toolrow">'+
+        '<span class="toolpill py"><span class="chip"></span>'+m.tools.python+'</span>'+
+        '<span class="toolpill r"><span class="chip"></span>'+m.tools.r+'</span>'+
+      '</div>';
+
+      if(m.code){
+        html += '<h5>Code example</h5>' + codeBlockHTML(m.code);
+      }
+
+      html += '<h5>Run it</h5>' + notebookLinksHTML(m.num, "track1");
+
+      html += '<h5>Hands-on exercise</h5><p class="topics-text">'+m.exercise+'</p>';
+      html += '<h5>Formative assessment</h5><p class="topics-text">'+m.assessment+'</p>';
+      if(m.governance){ html += '<div class="kv rai"><b>Governance / responsibility callback.</b> '+m.governance+'</div>'; }
+      html += '</article>';
+    });
+    html += '</div>';
+  });
+  root.innerHTML = html;
+})();
+
+/* ---- Chapter 6: assessment map ---- */
+document.getElementById("mapTable").innerHTML = ASSESS_MAP.map(function(r){
+  return "<tr><td>"+r[0]+"</td><td>"+r[1]+"</td><td>"+r[2]+"</td></tr>";
+}).join("");
+
+/* ============================================================
+   CODE TAB SWITCHING (event delegation)
+   ============================================================ */
+document.addEventListener("click", function(e){
+  var btn = e.target.closest(".tab-btn");
+  if(!btn) return;
+  var head = btn.parentElement;
+  var block = head.parentElement;
+  head.querySelectorAll(".tab-btn").forEach(function(b){ b.setAttribute("aria-selected", b === btn ? "true" : "false"); });
+  block.querySelectorAll(".codepanel").forEach(function(p){ p.classList.remove("active"); });
+  var target = document.getElementById(btn.getAttribute("data-target"));
+  if(target) target.classList.add("active");
+});
+
+/* ============================================================
+   SIDEBAR: build nav tree
+   ============================================================ */
+(function(){
+  var STATIC = [
+    {id:"ch-1", num:"1", title:"Overview", subs:[
+      {id:"ch-1-1", t:"1.1 Purpose & prerequisite"},
+      {id:"ch-1-2", t:"1.2 Design principles"},
+      {id:"ch-1-3", t:"1.3 Track at a glance"},
+      {id:"ch-1-4", t:"1.4 The dataset's path"}
+    ]},
+    {id:"ch-2", num:"2", title:"Work Environment", subs:[
+      {id:"ch-2-1", t:"2.1 Isolated environments"},
+      {id:"ch-2-2", t:"2.2 Project structure"},
+      {id:"ch-2-3", t:"2.3 Required packages"}
+    ]},
+    {id:"ch-3", num:"3", title:"The Regional Dataset", subs:[
+      {id:"ch-3-1", t:"3.1 NISR microdata"},
+      {id:"ch-3-2", t:"3.2 HDX boundaries"},
+      {id:"ch-3-3", t:"3.3 Loading & cleaning"},
+      {id:"ch-3-4", t:"3.4 Other African NSOs"},
+      {id:"ch-3-5", t:"3.5 WorldPop"},
+      {id:"ch-3-6", t:"3.6 World Bank"},
+      {id:"ch-3-7", t:"3.7 Regional & thematic"},
+      {id:"ch-3-8", t:"3.8 Web scraping"}
+    ]}
+  ];
+  var TAIL = [
+    {id:"ch-5", num:"5", title:"Capstone", subs:[]},
+    {id:"ch-6", num:"6", title:"Assessment Map", subs:[]},
+    {id:"ch-7", num:"7", title:"Certification", subs:[]}
+  ];
+
+  function chapterHTML(ch, openDefault){
+    var subsHtml = ch.subs.map(function(s){
+      return '<li><a href="#'+s.id+'" data-navlink data-target="'+s.id+'">'+s.t+'</a></li>';
+    }).join("");
+    return (
+      '<div class="nav-group'+(openDefault?" open":"")+'" data-navgroup>'+
+        '<button class="nav-ch" data-navtoggle aria-expanded="'+(openDefault?"true":"false")+'">'+
+          '<span class="num">'+ch.num+'</span><span>'+ch.title+'</span>'+
+          '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><polyline points="9 6 15 12 9 18"/></svg>'+
+        '</button>'+
+        (subsHtml ? '<ul class="nav-sub">'+subsHtml+'</ul>' : '')+
+      '</div>'
+    );
+  }
+
+  function ch4HTML(unitsArr, idPrefix){
+    idPrefix = idPrefix || "";
+    var subs = unitsArr.map(function(u){
+      var moduleLis = u.modules.map(function(m){
+        var mid = idPrefix+"m"+m.num;
+        return '<li class="sub-sub"><a href="#'+mid+'" data-navlink data-target="'+mid+'">M'+m.num+' &middot; '+m.title+'</a></li>';
+      }).join("");
+      var uid = idPrefix+"unit-"+u.id;
+      return '<li class="u-'+u.id+'"><a href="#'+uid+'" data-navlink data-target="'+uid+'"><span class="dot"></span>Unit '+u.letter+': '+u.title+'</a>'+
+        '<ul class="nav-sub" style="display:block; border:none; margin-left:.2rem; padding-left:.55rem;">'+moduleLis+'</ul></li>';
+    }).join("");
+    return (
+      '<div class="nav-group" data-navgroup>'+
+        '<button class="nav-ch" data-navtoggle aria-expanded="false">'+
+          '<span class="num">4</span><span>Curriculum</span>'+
+          '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><polyline points="9 6 15 12 9 18"/></svg>'+
+        '</button>'+
+        '<ul class="nav-sub">'+subs+'</ul>'+
+      '</div>'
+    );
+  }
+
+  var nav = document.getElementById("sidebar");
+  var tree = document.getElementById("sidebarTreeTrack2");
+  var out = "";
+  STATIC.forEach(function(ch, i){ out += chapterHTML(ch, i===0); });
+  out += ch4HTML(UNITS, "");
+  TAIL.forEach(function(ch){ out += chapterHTML(ch, false); });
+  tree.innerHTML = out;
+
+  /* ---- Track 1's sidebar tree, same shell, separate content ---- */
+  var STATIC_T1 = [
+    {id:"t1-ch-1", num:"1", title:"Overview", subs:[
+      {id:"t1-ch-1-1", t:"1.1 Track rationale"},
+      {id:"t1-ch-1-2", t:"1.2 Design principles"},
+      {id:"t1-ch-1-3", t:"1.3 Track at a glance"},
+      {id:"t1-ch-1-4", t:"1.4 The dataset's path"}
+    ]},
+    {id:"t1-ch-2", num:"2", title:"Work Environment", subs:[
+      {id:"t1-ch-2-1", t:"2.1 Isolated environments"},
+      {id:"t1-ch-2-2", t:"2.2 Project structure"},
+      {id:"t1-ch-2-3", t:"2.3 Required packages"}
+    ]},
+    {id:"t1-ch-3", num:"3", title:"Source Data for This Track", subs:[
+      {id:"t1-ch-3-1", t:"3.1 Three raw sources"},
+      {id:"t1-ch-3-2", t:"3.2 Messy on purpose"},
+      {id:"t1-ch-3-3", t:"3.3 Loading & cleaning"},
+      {id:"t1-ch-3-4", t:"3.4 The handoff, verified"}
+    ]}
+  ];
+  var TAIL_T1 = [
+    {id:"t1-ch-5", num:"5", title:"Capstone", subs:[]},
+    {id:"t1-ch-6", num:"6", title:"Assessment Map", subs:[]},
+    {id:"t1-ch-7", num:"7", title:"Certification", subs:[]}
+  ];
+  var treeT1 = document.getElementById("sidebarTreeTrack1");
+  var outT1 = "";
+  STATIC_T1.forEach(function(ch, i){ outT1 += chapterHTML(ch, i===0); });
+  outT1 += ch4HTML(UNITS_T1, "t1-");
+  TAIL_T1.forEach(function(ch){ outT1 += chapterHTML(ch, false); });
+  treeT1.innerHTML = outT1;
+
+  nav.addEventListener("click", function(e){
+    var t = e.target.closest("[data-navtoggle]");
+    if(t){
+      var group = t.closest("[data-navgroup]");
+      var isOpen = group.classList.toggle("open");
+      t.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      return;
+    }
+    var link = e.target.closest("[data-navlink]");
+    if(link){
+      document.getElementById("shell").classList.remove("nav-open");
+      document.getElementById("hamburger").setAttribute("aria-expanded","false");
+    }
+  });
+
+  /* live filter (desktop topbar input + mobile sidebar input, kept in sync) */
+  var filterInput = document.getElementById("navFilter");
+  var filterInputMobile = document.getElementById("navFilterMobile");
+  function runFilter(q){
+    q = q.trim().toLowerCase();
+    var groups = nav.querySelectorAll("[data-navgroup]");
+    groups.forEach(function(g){
+      if(!q){
+        g.classList.remove("nav-hidden");
+        g.querySelectorAll("li").forEach(function(li){ li.classList.remove("nav-hidden"); });
+        return;
+      }
+      var anyVisible = false;
+      var chapterMatches = g.querySelector(".nav-ch span:nth-child(2)").textContent.toLowerCase().indexOf(q) > -1;
+      g.querySelectorAll(":scope > ul > li").forEach(function(li){
+        var text = li.textContent.toLowerCase();
+        var subMatch = text.indexOf(q) > -1;
+        var subsubHits = false;
+        li.querySelectorAll(".sub-sub").forEach(function(ss){
+          var hit = ss.textContent.toLowerCase().indexOf(q) > -1;
+          ss.classList.toggle("nav-hidden", !(hit || subMatch || chapterMatches));
+          if(hit) subsubHits = true;
+        });
+        var show = chapterMatches || subMatch || subsubHits;
+        li.classList.toggle("nav-hidden", !show);
+        if(show) anyVisible = true;
+      });
+      g.classList.toggle("nav-hidden", !(chapterMatches || anyVisible));
+      if((chapterMatches || anyVisible) && q) g.classList.add("open");
+    });
+  }
+  filterInput.addEventListener("input", function(){
+    filterInputMobile.value = filterInput.value;
+    runFilter(filterInput.value);
+  });
+  filterInputMobile.addEventListener("input", function(){
+    filterInput.value = filterInputMobile.value;
+    runFilter(filterInputMobile.value);
+  });
+})();
+
+/* ============================================================
+   MOBILE NAV TOGGLE
+   ============================================================ */
+var shell = document.getElementById("shell");
+var hamburger = document.getElementById("hamburger");
+var scrim = document.getElementById("scrim");
+function closeNav(){ shell.classList.remove("nav-open"); hamburger.setAttribute("aria-expanded","false"); }
+hamburger.addEventListener("click", function(){
+  var open = shell.classList.toggle("nav-open");
+  hamburger.setAttribute("aria-expanded", open ? "true" : "false");
+});
+scrim.addEventListener("click", closeNav);
+
+/* ============================================================
+   SCROLL PROGRESS + SCROLLSPY
+   ============================================================ */
+var progressEl = document.getElementById("progress");
+function onScroll(){
+  var h = document.documentElement;
+  var scrolled = h.scrollTop;
+  var max = h.scrollHeight - h.clientHeight;
+  progressEl.style.width = (max > 0 ? (scrolled / max) * 100 : 0) + "%";
+}
+document.addEventListener("scroll", onScroll, {passive:true});
+onScroll();
+
+var spyTargets = Array.prototype.slice.call(document.querySelectorAll(
+  "#ch-1, #ch-1-1, #ch-1-2, #ch-1-3, #ch-1-4, #ch-2, #ch-2-1, #ch-2-2, #ch-2-3, #ch-3, #ch-3-1, #ch-3-2, #ch-3-3, #ch-3-4, #ch-3-5, #ch-3-6, #ch-3-7, #ch-3-8, [id^='unit-'], [id^='m'], #ch-5, #ch-6, #ch-7, "+
+  "#t1-ch-1, #t1-ch-1-1, #t1-ch-1-2, #t1-ch-1-3, #t1-ch-1-4, #t1-ch-2, #t1-ch-2-1, #t1-ch-2-2, #t1-ch-2-3, #t1-ch-3, #t1-ch-3-1, #t1-ch-3-2, #t1-ch-3-3, #t1-ch-3-4, [id^='t1-unit-'], [id^='t1-m'], #t1-ch-5, #t1-ch-6, #t1-ch-7"
+)).filter(function(el){ return /^m\d+$/.test(el.id) || el.id; });
+
+var navLinks = {};
+document.querySelectorAll("[data-navlink]").forEach(function(a){
+  navLinks[a.getAttribute("data-target")] = a;
+});
+
+var io = new IntersectionObserver(function(entries){
+  entries.forEach(function(entry){
+    if(entry.isIntersecting){
+      Object.keys(navLinks).forEach(function(k){ navLinks[k].classList.remove("active"); });
+      var link = navLinks[entry.target.id];
+      if(link){
+        link.classList.add("active");
+        var group = link.closest("[data-navgroup]");
+        if(group && !group.classList.contains("open")){
+          group.classList.add("open");
+          var btn = group.querySelector("[data-navtoggle]");
+          if(btn) btn.setAttribute("aria-expanded","true");
+        }
+      }
+    }
+  });
+}, {rootMargin: "-15% 0px -70% 0px", threshold: 0});
+spyTargets.forEach(function(el){ io.observe(el); });
+
+/* ============================================================
+   TRACK SWITCHER
+   One repository, one site shell, two tracks. Switching swaps which
+   track-panel and sidebar-tree-panel are visible; everything else
+   (theme, filter, scrollspy, tab switching) already works across
+   both because ids are track-prefixed ("t1-...") and never collide.
+   ============================================================ */
+var BRAND_TITLE = {track1: "Track 1 &middot; Source to Standard", track2: "Track 2 &middot; Data to Hub"};
+var brandTitleEl = document.getElementById("brandTitle");
+var trackSwitchEl = document.getElementById("trackSwitch");
+
+function applyTrack(name, opts){
+  opts = opts || {};
+  document.querySelectorAll(".track-panel").forEach(function(p){
+    p.hidden = (p.id !== "track-panel-"+name);
+  });
+  document.querySelectorAll(".sidebar-tree-panel").forEach(function(p){
+    p.hidden = (p.id !== "sidebarTreeTrack"+(name === "track1" ? "1" : "2"));
+  });
+  trackSwitchEl.querySelectorAll("[data-track-btn]").forEach(function(b){
+    b.setAttribute("aria-selected", b.getAttribute("data-track-btn") === name ? "true" : "false");
+  });
+  if(brandTitleEl) brandTitleEl.innerHTML = BRAND_TITLE[name];
+  try{ localStorage.setItem("t1t2-track", name); }catch(e){}
+  if(!opts.silent){
+    window.scrollTo(0, 0);
+    onScroll();
+  }
+}
+
+trackSwitchEl.addEventListener("click", function(e){
+  var btn = e.target.closest("[data-track-btn]");
+  if(!btn) return;
+  applyTrack(btn.getAttribute("data-track-btn"));
+});
+
+var savedTrack = "track2";
+try{ savedTrack = localStorage.getItem("t1t2-track") || "track2"; }catch(e){}
+applyTrack(savedTrack, {silent:true});
+
+})();
+</script>

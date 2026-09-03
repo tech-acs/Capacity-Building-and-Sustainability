@@ -1,0 +1,5 @@
+column,dtype,pct_missing,n_unique,description
+district,str,0.0,10,
+district_pcode,str,0.0,10,
+date,str,0.0,24,
+value,float64,0.0,232,
