@@ -1349,7 +1349,7 @@ document.getElementById("themeToggle").addEventListener("click", function(){
    notebook, app, and the data generator. Edit REPO.owner once,
    after pushing, to point these links at the real repo.
    ============================================================ */
-var REPO = { owner:"seknewna", name:"Capacity-Building-and-Sustainability", branch:"main" };
+var REPO = { owner:"tech-acs", name:"Capacity-Building-and-Sustainability", branch:"main" };
 function repoUrl(){ return "https://github.com/"+REPO.owner+"/"+REPO.name; }
 function githubUrl(path){ return repoUrl()+"/blob/"+REPO.branch+"/"+path; }
 function colabUrl(path){ return "https://colab.research.google.com/github/"+REPO.owner+"/"+REPO.name+"/blob/"+REPO.branch+"/"+path; }
@@ -1642,9 +1642,9 @@ var ASSESS_MAP = [
 
 var ENV_CODE = {
 python:
-"# 0. Clone the course repo: this site, the ten runnable\n#    notebooks, sample data, and both dashboard apps all live here\ngit clone https://github.com/seknewna/Capacity-Building-and-Sustainability.git\ncd Capacity-Building-and-Sustainability\n\n# 1. Create an isolated environment (once)\npython -m venv track2-env\nsource track2-env/bin/activate\n# Windows: track2-env\\Scripts\\activate\n\n# 2. Install the Track 2 package set\npip install -r environment/requirements.txt\n\n# 3. Launch the notebooks\njupyter lab notebooks/",
+"# 0. Clone the course repo: this site, the ten runnable\n#    notebooks, sample data, and both dashboard apps all live here\ngit clone https://github.com/tech-acs/Capacity-Building-and-Sustainability.git\ncd Capacity-Building-and-Sustainability\n\n# 1. Create an isolated environment (once)\npython -m venv track2-env\nsource track2-env/bin/activate\n# Windows: track2-env\\Scripts\\activate\n\n# 2. Install the Track 2 package set\npip install -r environment/requirements.txt\n\n# 3. Launch the notebooks\njupyter lab notebooks/",
 r:
-"# 0. Clone the course repo: this site, the ten runnable\n#    notebooks, sample data, and both dashboard apps all live here\ngit clone https://github.com/seknewna/Capacity-Building-and-Sustainability.git\nsetwd(\"Capacity-Building-and-Sustainability\")\n\n# 1. Create an isolated project library (once)\ninstall.packages(\"renv\")\nrenv::init()\n\n# 2. Install the Track 2 package set\nsource(\"environment/install.R\")\n\n# 3. Snapshot for reproducibility\nrenv::snapshot()"
+"# 0. Clone the course repo: this site, the ten runnable\n#    notebooks, sample data, and both dashboard apps all live here\ngit clone https://github.com/tech-acs/Capacity-Building-and-Sustainability.git\nsetwd(\"Capacity-Building-and-Sustainability\")\n\n# 1. Create an isolated project library (once)\ninstall.packages(\"renv\")\nrenv::init()\n\n# 2. Install the Track 2 package set\nsource(\"environment/install.R\")\n\n# 3. Snapshot for reproducibility\nrenv::snapshot()"
 };
 
 var FOLDER_TXT =
@@ -1821,9 +1821,9 @@ var ASSESS_MAP_T1 = [
 
 var ENV_CODE_T1 = {
 python:
-"# 0. Clone the course repo: both tracks' sites and notebooks\n#    live in this same repository\ngit clone https://github.com/seknewna/Capacity-Building-and-Sustainability.git\ncd Capacity-Building-and-Sustainability\n\n# 1. Create an isolated environment (once, shared with Track 2)\npython -m venv track2-env\nsource track2-env/bin/activate\n# Windows: track2-env\\Scripts\\activate\n\n# 2. Install the full package set (both tracks)\npip install -r environment/requirements.txt\npip install pandera fastapi uvicorn\n\n# 3. Generate this track's raw practice sources\npython3 data/make_track1_sources.py\n\n# 4. Launch the notebooks\njupyter lab notebooks/track1/",
+"# 0. Clone the course repo: both tracks' sites and notebooks\n#    live in this same repository\ngit clone https://github.com/tech-acs/Capacity-Building-and-Sustainability.git\ncd Capacity-Building-and-Sustainability\n\n# 1. Create an isolated environment (once, shared with Track 2)\npython -m venv track2-env\nsource track2-env/bin/activate\n# Windows: track2-env\\Scripts\\activate\n\n# 2. Install the full package set (both tracks)\npip install -r environment/requirements.txt\npip install pandera fastapi uvicorn\n\n# 3. Generate this track's raw practice sources\npython3 data/make_track1_sources.py\n\n# 4. Launch the notebooks\njupyter lab notebooks/track1/",
 r:
-"# 0. Clone the course repo: both tracks' sites and notebooks\n#    live in this same repository\ngit clone https://github.com/seknewna/Capacity-Building-and-Sustainability.git\nsetwd(\"Capacity-Building-and-Sustainability\")\n\n# 1. Create an isolated project library (once, shared with Track 2)\ninstall.packages(\"renv\")\nrenv::init()\n\n# 2. Install the full package set (both tracks)\nsource(\"environment/install.R\")\ninstall.packages(c(\"pointblank\", \"plumber\"))\n\n# 3. Generate this track's raw practice sources\nsystem(\"python3 data/make_track1_sources.py\")"
+"# 0. Clone the course repo: both tracks' sites and notebooks\n#    live in this same repository\ngit clone https://github.com/tech-acs/Capacity-Building-and-Sustainability.git\nsetwd(\"Capacity-Building-and-Sustainability\")\n\n# 1. Create an isolated project library (once, shared with Track 2)\ninstall.packages(\"renv\")\nrenv::init()\n\n# 2. Install the full package set (both tracks)\nsource(\"environment/install.R\")\ninstall.packages(c(\"pointblank\", \"plumber\"))\n\n# 3. Generate this track's raw practice sources\nsystem(\"python3 data/make_track1_sources.py\")"
 };
 
 var FOLDER_TXT_T1 =
